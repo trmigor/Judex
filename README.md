@@ -1,2 +1,2 @@
-# judex
+# Judex
 Contest system
