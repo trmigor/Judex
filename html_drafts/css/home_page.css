@@ -1,0 +1,80 @@
+body {
+    margin: 0px;
+
+    background-color: #e5d9ca;
+    font-size: 14px;
+}
+
+.header {
+    width: 100%;
+    height: 50px;
+
+    margin: 0px;
+
+    border-style: groove;
+    border-width: 0px 0px 2px 0px;
+    border-color: #f4710c;
+
+    background: linear-gradient(to right bottom, #51079f, #400a35);
+    color: #a8c6e2;
+    font-family: Helvetica;
+}
+
+.logo {
+    width: 130px;
+    height: 50px;
+
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+    margin: 0px;
+
+    border-style: ridge;
+    border-width: 0px 2px 0px 0px;
+
+    text-align: center;
+    line-height: 50px;
+
+    color: #f4710c;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 4px;
+}
+
+.sign_in_button {
+    width: 60px;
+    height: 30px;
+
+    position: absolute;
+    left: calc(100% - 80px);
+    top: 5px;
+    float: right;
+
+    text-align: center;
+    line-height: 30px;
+
+    border-style: double;
+    border-width: 5px;
+    border-radius: 10px;
+
+    background: linear-gradient(to left bottom, #bfebb0, #95ffe8);
+
+    color: #400A35;
+    font-size: 16px;
+}
+
+.main {
+    width: calc(60% - 40px);
+    height: calc(80% - 40px);
+
+    position: absolute;
+    top: 100px;
+    left: 20%;
+
+    padding: 20px;
+
+    border-radius: 20px;
+
+    background-color: #a1c0d1;
+}
