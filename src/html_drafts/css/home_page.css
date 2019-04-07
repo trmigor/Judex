@@ -1,7 +1,7 @@
 body {
     margin: 0px;
 
-    background-color: #e5d9ca;
+    background-color: #ffffff;
     font-size: 14px;
 }
 
@@ -13,7 +13,10 @@ body {
 
     border-style: groove;
     border-width: 0px 0px 2px 0px;
-    border-color: #f4710c;
+    border-color: #95ffe8;
+
+    border-image: linear-gradient(to left, #bfebb0, #95ffe8);
+    border-image-slice: 1;
 
     background: linear-gradient(to right bottom, #51079f, #400a35);
     color: #a8c6e2;
@@ -32,14 +35,20 @@ body {
 
     border-style: ridge;
     border-width: 0px 2px 0px 0px;
+    border-image: linear-gradient(to bottom, #bfebb0, #95ffe8);
+    border-image-slice: 1;
 
     text-align: center;
     line-height: 50px;
 
-    color: #f4710c;
+    color: #95ffe8;
     font-size: 25px;
     font-weight: bold;
     letter-spacing: 4px;
+
+    background: linear-gradient(to left, #bfebb0, #95ffe8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .sign_in_button {
@@ -48,8 +57,7 @@ body {
 
     position: absolute;
     left: calc(100% - 80px);
-    top: 5px;
-    float: right;
+    top: -10px;
 
     text-align: center;
     line-height: 30px;
@@ -60,21 +68,60 @@ body {
 
     background: linear-gradient(to left bottom, #bfebb0, #95ffe8);
 
-    color: #400A35;
+    color: #400a35;
     font-size: 16px;
 }
 
-.main {
-    width: calc(60% - 40px);
-    height: calc(80% - 40px);
+.sign_up_button {
+    width: 60px;
+    height: 30px;
 
     position: absolute;
-    top: 100px;
-    left: 20%;
+    left: calc(100% - 160px);
+    top: -5px;
+    float: right;
+
+    text-align: center;
+    line-height: 30px;
+
+    color: #95ffe8;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.main {
+    width: calc(70% - 40px);
+    min-height: 300px;
+
+    position: absolute;
+    top: 80px;
+    left: 15%;
 
     padding: 20px;
 
-    border-radius: 20px;
+    border-radius: 5px;
 
-    background-color: #a1c0d1;
+    background-color: #e8ecef;
+    
+}
+
+h1 {
+    margin-left: 25px;
+    margin-bottom: 10px;
+
+    font-family: Helvetica Neue;
+    font-weight: 500;
+    font-size: 50px;
+    letter-spacing: 1px;
+}
+
+h2 {
+    margin-top: 10px;
+    margin-left: 25px;
+    margin-bottom: 10px;
+
+    font-family: Helvetica Neue;
+    font-weight: 200;
+    font-size: 20px;
+    letter-spacing: 1px;
 }
