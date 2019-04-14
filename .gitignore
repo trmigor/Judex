@@ -1,0 +1,6 @@
+.DS_Store
+ssh_passphrase.txt
+Gopkg.lock
+Gopkg.toml
+logs.log
+vendor
