@@ -111,10 +111,22 @@ h1 {
     margin-left: 25px;
     margin-bottom: 40px;
 
-    font-family: Helvetica Neue;
-    font-weight: 500;
+    font-family: Helvetica;
+    font-weight: 700;
     font-size: 30px;
     letter-spacing: 1px;
+}
+
+.sign_in_link {
+    width: 90%;
+
+    margin-left: calc(5px + 5%);
+    margin-top: 20px;
+
+    font-family: Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 2;
 }
 
 .field {
@@ -218,6 +230,16 @@ a > input {
     letter-spacing: 3px;
     text-transform: uppercase;
 }
+
+
+a {	
+	text-decoration: none;
+	
+}
+
+a:visited{ color: #51079f;}
+a:active{ color: #51079f;}
+a:hover{ color: #51079f;}
 
 input, textarea {
     -webkit-transition: all 0.30s ease-in-out;

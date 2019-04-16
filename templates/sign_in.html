@@ -3,24 +3,24 @@
 
     <head>
         <title>Judex::Sign in</title>
-        <link href="css/sign_in.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="/static/stylesheets/sign_in.css" type="text/css">
         <link rel="shortcut icon" href="img/logo.png" type="image/png">
-        <script type="text/javascript" src="scripts/js/sign_in.js"></script>
+        <script type="text/javascript" src="/static/scripts/sign_in.js"></script>
     </head>
 
     <body>
         <div class="header">
-            <a href="index.html">
+            <a href="/">
                 <div>
                     <p class="logo">JUDEX</p>
                 </div>
             </a>
-            <a href="sign_in.html">
+            <a href="/sign_in">
                 <div>
                     <p class="sign_in_button">Sign in</p>
                 </div>
             </a>
-            <a href="registration.html">
+            <a href="/registration">
                 <div>
                     <p class="sign_up_button">Sign up</p>
                 </div>
@@ -29,7 +29,7 @@
 
         <div class="main">
             <h1>Sign in to Judex</h1>
-            <form action="/reg_submit" method="post">
+            <form action="/sign_in_submit" method="post">
                 <div class="field">
                     Username<sup>&#10033;</sup><br/>
                     <input type="text" name="username" id="username" placeholder="..." required value autocomplete="off" />
@@ -41,12 +41,12 @@
                 <div class="submit">
                     <input type="submit" name="submit" id="submit" value="Sign in" onClick="validateSubmit()" />
                 </div>
-                <a href="index.html">
+                <a href="/">
                     <input type="button" name="cancel" id="cancel" value="Cancel" />
                 </a>
 				<div class="sign_up_link">
                     No account?
-						<a href="registration.html">Create one.</a>
+						<a href="/registration">Create one.</a>
                 </div>
             </form>
         </div>

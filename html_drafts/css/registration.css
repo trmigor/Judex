@@ -120,7 +120,7 @@ h1 {
 .sign_in_link {
     width: 90%;
 
-    margin-left: calc(7%);
+    margin-left: calc(5px + 5%);
     margin-top: 20px;
 
     font-family: Helvetica;

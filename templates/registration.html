@@ -2,12 +2,10 @@
 <html>
 
     <head>
-        <link rel="stylesheet" href="/static/stylesheets/registration.css" type="text/css">
-        <link rel="shortcut icon" href="/static/stylesheets/logo.png" type="image/png">
-
-        <script type="text/javascript" src="/static/scripts/registration.js"></script>
-
         <title>Judex::Sign up</title>
+        <link href="/static/stylesheets/registration.css" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="/static/stylesheets/logo.png" type="image/png">
+        <script type="text/javascript" src="/static/scripts/registration.js"></script>
     </head>
 
     <body>
@@ -75,9 +73,13 @@
                 <div class="submit">
                     <input type="submit" name="submit" id="submit" value="Submit" onClick="validateSubmit()" />
                 </div>
-                <a href="index.html">
+                <a href="/">
                     <input type="button" name="cancel" id="cancel" value="Cancel" />
                 </a>
+				<div class="sign_in_link">
+                    Already have an account?
+						<a href="/sign_in">Sign in.</a>
+                </div>
             </form>
         </div>
 

@@ -1,5 +1,3 @@
-import { SHA3 } from 'sha3';
-
 /*
     This function checks the form input on registration page
 */
