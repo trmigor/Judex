@@ -117,18 +117,6 @@ h1 {
     letter-spacing: 1px;
 }
 
-.sign_in_link {
-    width: 90%;
-
-    margin-left: calc(7%);
-    margin-top: 20px;
-
-    font-family: Helvetica;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 2;
-}
-
 .field {
     width: 90%;
 
@@ -171,6 +159,18 @@ h1 {
     border-radius: 5px;
 
     font-size: 14px;
+}
+
+.sign_in_link {
+    width: 90%;
+
+    margin-left: calc(7%);
+    margin-top: 20px;
+
+    font-family: Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 2;
 }
 
 .field::-moz-placeholder { color: #737373; }
@@ -229,12 +229,11 @@ a > input {
     font-weight: bold;
     letter-spacing: 3px;
     text-transform: uppercase;
+	
 }
-
 
 a {	
 	text-decoration: none;
-	
 }
 
 a:visited{ color: #51079f;}

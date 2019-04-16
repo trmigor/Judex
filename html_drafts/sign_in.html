@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Judex::Sign in</title>
+        <link href="css/sign_in.css" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="img/logo.png" type="image/png">
+        <script type="text/javascript" src="scripts/js/sign_in.js"></script>
+    </head>
+
+    <body>
+        <div class="header">
+            <a href="index.html">
+                <div>
+                    <p class="logo">JUDEX</p>
+                </div>
+            </a>
+            <a href="sign_in.html">
+                <div>
+                    <p class="sign_in_button">Sign in</p>
+                </div>
+            </a>
+            <a href="registration.html">
+                <div>
+                    <p class="sign_up_button">Sign up</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="main">
+            <h1>Sign in to Judex</h1>
+            <form action="/reg_submit" method="post">
+                <div class="field">
+                    Username<sup>&#10033;</sup><br/>
+                    <input type="text" name="username" id="username" placeholder="..." required value autocomplete="off" />
+                </div>
+                <div class="field">
+                    Password<sup>&#10033;</sup><br/>
+                    <input type="password" name="password" id="password" placeholder="*******" required value autocomplete="off" />
+                </div>
+                <div class="submit">
+                    <input type="submit" name="submit" id="submit" value="Sign in" onClick="validateSubmit()" />
+                </div>
+                <a href="index.html">
+                    <input type="button" name="cancel" id="cancel" value="Cancel" />
+                </a>
+				<div class="sign_in_link">
+                    No account?
+						<a href="registration.html">Create one</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="footer">
+            <p class="copyright">© Igor Taraymovich, Dmitry Gushchin, Kirill Puchkov - 2019</p>
+        </div>
+    </body>
+</html>
