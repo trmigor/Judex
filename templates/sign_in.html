@@ -4,7 +4,7 @@
     <head>
         <title>Judex::Sign in</title>
         <link rel="stylesheet" href="/static/stylesheets/sign_in.css" type="text/css">
-        <link rel="shortcut icon" href="img/logo.png" type="image/png">
+        <link rel="shortcut icon" href="/static/stylesheets/logo.png" type="image/png">
         <script type="text/javascript" src="/static/scripts/sign_in.js"></script>
     </head>
 
@@ -32,11 +32,17 @@
             <form action="/sign_in_submit" method="post">
                 <div class="field">
                     Username<sup>&#10033;</sup><br/>
-                    <input type="text" name="username" id="username" placeholder="..." required value autocomplete="off" />
+                    <input type="text" name="username" id="username" placeholder="..." value="{{.Username}}" required value autocomplete="off" />
+                </div>
+                <div class="error" style="display: {{.UsernameError}}; ">
+                    No such user.
                 </div>
                 <div class="field">
                     Password<sup>&#10033;</sup><br/>
                     <input type="password" name="password" id="password" placeholder="*******" required value autocomplete="off" />
+                </div>
+                <div class="error" style="display: {{.PasswordError}}; ">
+                    Wrong password.
                 </div>
                 <div class="submit">
                     <input type="submit" name="submit" id="submit" value="Sign in" onClick="validateSubmit()" />

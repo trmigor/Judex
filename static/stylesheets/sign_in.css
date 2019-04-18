@@ -91,7 +91,7 @@ body {
 
 .main {
     width: calc(50% - 40px);
-    min-height: 400px;
+    min-height: 300px;
     min-width: 400px;
 
     position: absolute;
@@ -159,6 +159,29 @@ h1 {
     border-radius: 5px;
 
     font-size: 14px;
+}
+
+.error {
+    height: 40px;
+    width: 90%;
+
+    margin-left: 5%;
+    margin-top: 10px;
+
+    padding-left: 20px;
+
+    border-radius: 5px;
+
+    background-color: #d95c5c!important;
+    border-color: #d95c5c!important;
+    border-style: solid;
+    border-width: 1px;
+
+    color: #ffffff!important;
+
+    text-transform: uppercase;
+    font-family: Helvetica;
+    line-height: 40px;
 }
 
 .sign_up_link {

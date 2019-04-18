@@ -47,6 +47,12 @@ type Sign_in struct {
     Password string
 }
 
+type Sign_in_Page struct {
+    Username string
+    UsernameError string
+    PasswordError string
+}
+
 
 /*
     Constants
@@ -195,7 +201,13 @@ func sign_in(w http.ResponseWriter, r *http.Request) {
         }
     }
 
-    if err := templates.ExecuteTemplate(w, "sign_in.html", ""); err != nil {
+    page := Sign_in_Page {
+        Username: "",
+        UsernameError: "none",
+        PasswordError: "none",
+    }
+
+    if err := templates.ExecuteTemplate(w, "sign_in.html", page); err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
     }
 }
@@ -431,6 +443,7 @@ func errorHandler(w http.ResponseWriter, r *http.Request, status int) {
                 http.Error(w, err.Error(), http.StatusInternalServerError)
             }
         case http.StatusInternalServerError:
+            w.WriteHeader(status)
             fmt.Fprint(w, "Something is wrong with our server")
         case 1100:
             fmt.Fprint(w, "Username is not unique")
@@ -453,14 +466,39 @@ func errorHandler(w http.ResponseWriter, r *http.Request, status int) {
 */
 
 func main() {
+    args := os.Args
+    var log_path, template_path string
+   
+    if len(args) >= 3 {
+        template_path = args[2]
+    } else {
+        template_path = "/var/www/judex.vdi.mipt.ru"
+    }
+    if len(args) >= 2 {
+        log_path = args[1]
+    } else {
+        log_path = "/var/cache/Judex"
+    }
+
     // Creating of a log file
-    log_file, err := os.OpenFile("logs.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+    log_file, err := os.OpenFile(log_path + "/logs.log", os.O_WRONLY | os.O_CREATE | os.O_APPEND, 0644)
+    if err != nil {
+        log.Fatal(err)
+    }
     defer log_file.Close()
     log.SetOutput(log_file)
     log.Println("STARTED");
 
     // Enabling the HTML templates
-    templates = template.Must(template.ParseFiles("templates/index.html", "templates/registration.html", "templates/sign_in.html", "templates/error404.html"))
+    // Slice of templates' names
+    template_names := []string{
+        template_path + "/templates/index.html",
+        template_path + "/templates/registration.html",
+        template_path + "/templates/sign_in.html",
+        template_path + "/templates/error404.html",
+    }
+
+    templates = template.Must(template.ParseFiles(template_names...))
 
     // Changing URL for "/static/"
     http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
