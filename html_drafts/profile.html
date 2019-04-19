@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Judex::Sign up</title>
+        <link href="css/profile.css" rel="stylesheet" type="text/css">
+        <link rel="shortcut icon" href="img/logo.png" type="image/png">
+        <script type="text/javascript" src="scripts/js/registration.js"></script>
+    </head>
+
+    <body>
+        <div class ="headerMain">
+			<div class="header">
+				<a href="index.html">
+					<div>
+						<p class="logo">JUDEX</p>
+					</div>
+				</a>			
+				<a href="my_contests.html">
+					<div>
+						<p class="my_contests">My contests</p>
+					</div>
+				</a>
+				<a href="all_contests.html">
+					<div>
+						<p class="all_contests">All contests</p>
+					</div>
+				</a>
+				<a href="problems.html">
+					<div>
+						<p class="problems">Problems</p>
+					</div>
+				</a><!---->
+				<a href="sign_in.html">
+					<div>
+						<p class="sign_out_button">Sign out</p>
+					</div>
+				</a>
+				<a href="profile.html">
+					<div>
+						<p class="my_profile">My profile</p>
+					</div>
+				</a>
+			</div>
+        </div>
+
+        <div class="main">
+            <h1>Information about you</h1>
+            <form action="/reg_submit" method="post">
+                <div class="field">
+                    Username <br/>
+                    <input type="text" name="username" id="username" placeholder="..." required value autocomplete="off" />
+                </div>
+                <div class="field">
+                    Email <br/>
+                    <input type="email" name="email" id="email" placeholder="example@somewhere.com" required value autocomplete="off" />
+                </div>
+                <div class="field">
+                    Password <br/>
+                    <input type="password" name="password" id="password" placeholder="*******" required value autocomplete="off" />
+                </div>
+                <div class="field">
+                    Confirm your password <br/>
+                    <input type="password" name="confirm_password" id="confirm_password" placeholder="your password again" required value autocomplete="off" />
+                </div>
+                <div class="field">
+                    First name <br/>
+                    <input type="text" name="f_name" id="f_name" placeholder="First name" required value autocomplete="off" />
+                </div>
+                <div class="field">
+                    Middle name<br/>
+                    <input type="text" name="m_name" id="m_name" placeholder="Middle name" value autocomplete="off" />
+                </div>
+                <div class="field">
+                    Last name <br/>
+                    <input type="text" name="l_name" id="l_name" placeholder="Last name" required value autocomplete="off" />
+                </div>
+                <div class="field">
+                    Company<br />
+                    <input type="text" name="company" id="company" placeholder="Company" value autocomplete="off" />
+                </div>
+                <div class="field">
+                    Website<br />
+                    <input type="text" name="website" id="website" placeholder="example.com" value autocomplete="off" />
+                </div>
+                <div class="field">
+                    Bio<br />
+                    <textarea rows="5" name="bio" id="bio" placeholder="Tell about yourself" value autocomplete="off"></textarea>
+                </div>
+                <div class="submit">
+                    <input type="submit" name="submit" id="submit" value="Update" onClick="validateSubmit()" />
+                </div>
+                <a href="home.html">
+                    <input type="button" name="cancel" id="cancel" value="Cancel" />
+                </a>
+            </form>
+        </div>
+
+        <div class="footer">
+            <p class="copyright">&copy; Igor Taraymovich, Dmitry Gushchin, Kirill Puchkov - 2019</p>
+        </div>
+    </body>
+
+</html>
