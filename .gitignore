@@ -5,6 +5,7 @@ Gopkg.toml
 logs.log
 vendor
 Judex
+go_drafts/Makefile
 go_drafts/*.dat
 go_drafts/*.ans
 go_drafts/*.err

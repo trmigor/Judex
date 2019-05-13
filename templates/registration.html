@@ -34,9 +34,15 @@
                     Username<sup>&#10033;</sup><br/>
                     <input type="text" name="username" id="username" placeholder="..." required value autocomplete="off" />
                 </div>
+                <div class="error" style="display: {{.UsernameError}}; ">
+                        This user already exists
+                </div>
                 <div class="field">
                     Email<sup>&#10033;</sup><br/>
                     <input type="email" name="email" id="email" placeholder="example@somewhere.com" required value autocomplete="off" />
+                </div>
+                <div class="error" style="display: {{.EmailError}}; ">
+                        This email is already used
                 </div>
                 <div class="field">
                     Password<sup>&#10033;</sup><br/>

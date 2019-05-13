@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"time"
-	"./testing_packages/compile_and_run"
+	"./testing_packages/compileandrun"
 )
 
 func main() {
@@ -14,7 +14,7 @@ func main() {
 	
 	var attr os.ProcAttr
 	attr.Files = []*os.File{os.Stdin, os.Stdout, os.Stderr}
-	c := compile_and_run.Init {
+	c := compileandrun.Init {
 		Solution:		1,
 		Format:			".c",
 		Path:			"/Users/itar/go/src/github.com/trmigor/Judex/go_drafts/",
@@ -23,14 +23,14 @@ func main() {
 		CompilerAttr:	attr,
 		TestsPath:		"/Users/itar/go/src/github.com/trmigor/Judex/go_drafts/testing_packages/",
 		TestsNumber:	1,
-		RunLimits:		compile_and_run.Limits {
+		RunLimits:		compileandrun.Limits {
 							TL:		1*1000*1000*1000,
 							RTL:	1*1000*1000*1000,
 						},
 	}
 	p, err := c.Compile()
 	fmt.Println("Hello World1", p, err)
-	time.Sleep(1000*1000)
+	time.Sleep(100*1000*1000)
 	err = c.Run()
 	fmt.Println("Hello World2", err)
 }
