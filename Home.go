@@ -35,7 +35,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	credentialsCollection := client.Database("Judex").Collection("credentials")
 
-	filter := bson.D{{"userip", userCredential.UserIP}}
+	filter := bson.D{{Key: "userip", Value: userCredential.UserIP}}
 	err = credentialsCollection.FindOne(context.TODO(), filter).Decode(&userCredential)
 
 	if err == nil {

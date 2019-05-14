@@ -26,11 +26,6 @@ body {
     font-family: Helvetica;
 }
 
-.headerMain {
-	margin:0px auto;
-	z-index:0;
-}
-
 .logo {
     width: 130px;
     height: 50px;

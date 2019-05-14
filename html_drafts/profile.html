@@ -2,62 +2,60 @@
 <html>
 
     <head>
-        <title>Judex::Sign up</title>
-        <link href="css/profile.css" rel="stylesheet" type="text/css">
-        <link rel="shortcut icon" href="img/logo.png" type="image/png">
-        <script type="text/javascript" src="scripts/js/registration.js"></script>
+        <title>Judex::Profile</title>
+        <link href="/static/stylesheets/profile.css" rel="stylesheet" type="text/css">
+        <link href="/static/stylesheets/logo.png" rel="shortcut icon" type="image/png">
+        <script type="text/javascript" src="/static/scripts/profile.js"></script>
     </head>
 
     <body>
-        <div class ="headerMain">
-			<div class="header">
-				<a href="index.html">
-					<div>
-						<p class="logo">JUDEX</p>
-					</div>
-				</a>			
-				<a href="my_contests.html">
-					<div>
-						<p class="my_contests">My contests</p>
-					</div>
-				</a>
-				<a href="all_contests.html">
-					<div>
-						<p class="all_contests">All contests</p>
-					</div>
-				</a>
-				<a href="problems.html">
-					<div>
-						<p class="problems">Problems</p>
-					</div>
-				</a><!---->
-				<a href="sign_in.html">
-					<div>
-						<p class="sign_out_button">Sign out</p>
-					</div>
-				</a>
-				<a href="profile.html">
-					<div>
-						<p class="my_profile">My profile</p>
-					</div>
-				</a>
-			</div>
-        </div>
+		<div class="header">
+			<a href="/">
+				<div>
+					<p class="logo">JUDEX</p>
+				</div>
+			</a>			
+			<a href="/my_contests">
+				<div>
+					<p class="my_contests">My contests</p>
+				</div>
+			</a>
+			<a href="/all_contests">
+				<div>
+					<p class="all_contests">All contests</p>
+				</div>
+			</a>
+			<a href="/problems">
+				<div>
+					<p class="problems">Problems</p>
+				</div>
+			</a>
+			<a href="/sign_out">
+				<div>
+					<p class="sign_out_button">Sign out</p>
+				</div>
+			</a>
+			<a href="/profile">
+				<div>
+					<p class="my_profile">My profile</p>
+				</div>
+			</a>
+		</div>
 
         <div class="main">
             <h1>Information about you</h1>
-            <form action="/reg_submit" method="post">
+            <form action="/change_submit" method="post">
                 <div class="field">
                     Username <br/>
-                    <input type="text" name="username" id="username" placeholder="..." required value autocomplete="off" />
+                    <input type="text" name="username" id="username" value="{{.Username}}" placeholder="..." required value autocomplete="off" />
                 </div>
                 <div class="field">
                     Email <br/>
-                    <input type="email" name="email" id="email" placeholder="example@somewhere.com" required value autocomplete="off" />
+                    <input type="email" name="email" id="email" value="{{.Email}}" placeholder="example@somewhere.com" required value autocomplete="off" />
                 </div>
                 <div class="field">
                     Password <br/>
-                    <input type="password" name="password" id="password" placeholder="*******" required value autocomplete="off" />
+                    <input type="password" name="password" id="password" value="{{.Password}}" placeholder="*******" required value autocomplete="off" />
                 </div>
                 <div class="field">
                     Confirm your password <br/>
@@ -65,32 +63,32 @@
                 </div>
                 <div class="field">
                     First name <br/>
-                    <input type="text" name="f_name" id="f_name" placeholder="First name" required value autocomplete="off" />
+                    <input type="text" name="f_name" id="f_name" value="{{.FirstName}}" placeholder="First name" required value autocomplete="off" />
                 </div>
                 <div class="field">
                     Middle name<br/>
-                    <input type="text" name="m_name" id="m_name" placeholder="Middle name" value autocomplete="off" />
+                    <input type="text" name="m_name" id="m_name" value="{{.MiddleName}}" placeholder="Middle name" value autocomplete="off" />
                 </div>
                 <div class="field">
                     Last name <br/>
-                    <input type="text" name="l_name" id="l_name" placeholder="Last name" required value autocomplete="off" />
+                    <input type="text" name="l_name" id="l_name" value="{{.LastName}}" placeholder="Last name" required value autocomplete="off" />
                 </div>
                 <div class="field">
                     Company<br />
-                    <input type="text" name="company" id="company" placeholder="Company" value autocomplete="off" />
+                    <input type="text" name="company" id="company" value="{{.Company}}" placeholder="Company" value autocomplete="off" />
                 </div>
                 <div class="field">
                     Website<br />
-                    <input type="text" name="website" id="website" placeholder="example.com" value autocomplete="off" />
+                    <input type="text" name="website" id="website" value="{{.Website}}" placeholder="example.com" value autocomplete="off" />
                 </div>
                 <div class="field">
                     Bio<br />
-                    <textarea rows="5" name="bio" id="bio" placeholder="Tell about yourself" value autocomplete="off"></textarea>
+                    <textarea rows="5" name="bio" id="bio" placeholder="Tell about yourself" value autocomplete="off">{{.Bio}}</textarea>
                 </div>
                 <div class="submit">
                     <input type="submit" name="submit" id="submit" value="Update" onClick="validateSubmit()" />
                 </div>
-                <a href="home.html">
+                <a href="/">
                     <input type="button" name="cancel" id="cancel" value="Cancel" />
                 </a>
             </form>

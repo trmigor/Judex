@@ -11,9 +11,8 @@ import (
 	"github.com/mongodb/mongo-go-driver/bson"
 )
 
-// RegSubmit handles POST request for registration submit
-func RegSubmit(w http.ResponseWriter, r *http.Request) {
-
+// ChangeSubmit handles POST request for profile change submit
+func ChangeSubmit(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 
 	if err != nil {
@@ -73,8 +72,6 @@ func RegSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println("Registered. Username:", formResult.Username)
-
-	MailSender("Welcome.txt", &formResult)
 
 	// Creating a credential
 	ip, _, err := net.SplitHostPort(r.RemoteAddr)

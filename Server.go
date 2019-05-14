@@ -1,12 +1,16 @@
 package main
 
 import (
+	"fmt"			// I/O formatting
+	"io"			// EOF
+	"strings"		// Strings splitting
 	"html/template" // Html usage
 	"log"           // Logs
 	"net"           // Server logic
 	"net/http"      // Server logic
 	"os"            // OS syscalls
 	"time"          // Timing
+	"os/signal"		// Signal handling
 
 	// Database
 	"context"
@@ -43,21 +47,56 @@ var (
 
 	// MongoDB client
 	client *mongo.Client
+
+	// Server configure
+	logPath, templatePath, staticPath, emailPatterns string
 )
 
 func main() {
-	args := os.Args
-	var logPath, templatePath string
+	// Automatic configure
+	config, err := os.OpenFile("server.config", os.O_RDONLY, 0400)
 
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for {
+		var configInput string
+		_, err := fmt.Fscanln(config, &configInput)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		setting := strings.Split(configInput, "=")
+		value := strings.Split(setting[1], "\"")
+		switch setting[0] {
+		case "logPath":
+			logPath = value[1]
+		case "templatePath":
+			templatePath = value[1]
+		case "staticPath":
+			staticPath = value[1]
+		case "emailPatterns":
+			emailPatterns = value[1]
+		}
+	}
+
+	// Manual configure
+	args := os.Args
+
+	if len(args) >= 5 {
+		emailPatterns = args[4]
+	}
+	if len(args) >= 4 {
+		staticPath = args[3]
+	}
 	if len(args) >= 3 {
 		templatePath = args[2]
-	} else {
-		templatePath = "/var/www/judex.vdi.mipt.ru"
 	}
 	if len(args) >= 2 {
 		logPath = args[1]
-	} else {
-		logPath = "/var/cache/Judex"
 	}
 
 	// Creating of a log file
@@ -65,25 +104,30 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer logFile.Close()
+
 	log.SetOutput(logFile)
+
 	log.Println("STARTED")
+
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, os.Kill, os.Interrupt)
+	go Stop(sigs, logFile)
 
 	// Enabling the HTML templates
 	// Slice of templates' names
 	templateNames := []string{
-		templatePath + "/templates/index.html",
-		templatePath + "/templates/registration.html",
-		templatePath + "/templates/sign_in.html",
-		templatePath + "/templates/error404.html",
-		templatePath + "/templates/home.html",
-		templatePath + "/templates/profile.html",
+		templatePath + "/index.html",
+		templatePath + "/registration.html",
+		templatePath + "/sign_in.html",
+		templatePath + "/error404.html",
+		templatePath + "/home.html",
+		templatePath + "/profile.html",
 	}
 
 	templates = template.Must(template.ParseFiles(templateNames...))
 
 	// Changing URL for "/static/"
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(staticPath))))
 
 	// Defining handlers for requests
 	http.HandleFunc("/", Index)
@@ -107,11 +151,5 @@ func main() {
 	log.Println("Listening")
 	log.Fatal(http.ListenAndServe(":80", nil))
 
-	// Database disconnection
-	err = client.Disconnect(context.TODO())
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println("Connection to MongoDB closed.")
-	log.Println("STOPPED")
+	Stop(nil, logFile)
 }

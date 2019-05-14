@@ -35,7 +35,7 @@ func SignOut(w http.ResponseWriter, r *http.Request) {
 
 	credentialsCollection := client.Database("Judex").Collection("credentials")
 
-	filter := bson.D{{"userip", userCredential.UserIP}}
+	filter := bson.D{{Key: "userip", Value: userCredential.UserIP}}
 	credentialsCollection.DeleteMany(context.TODO(), filter)
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)

@@ -17,7 +17,7 @@ body {
 
     border-image: linear-gradient(to left, #bfebb0, #95ffe8);
     border-image-slice: 1;
-  
+
     background: linear-gradient(to right bottom, #51079f, #400a35);
     color: #a8c6e2;
     font-family: Helvetica;
@@ -252,6 +252,29 @@ input, textarea {
 input:focus, textarea:focus {
     box-shadow: 0 0 5px #51079f;
     border: 1px solid #51079f;
+}
+
+.error {
+    height: 40px;
+    width: 90%;
+
+    margin-left: 5%;
+    margin-top: 10px;
+
+    padding-left: 20px;
+
+    border-radius: 5px;
+
+    background-color: #d95c5c!important;
+    border-color: #d95c5c!important;
+    border-style: solid;
+    border-width: 1px;
+
+    color: #ffffff!important;
+
+    text-transform: uppercase;
+    font-family: Helvetica;
+    line-height: 40px;
 }
 
 .footer {

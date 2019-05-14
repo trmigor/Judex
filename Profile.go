@@ -35,7 +35,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 
 	credentialsCollection := client.Database("Judex").Collection("credentials")
 
-	filter := bson.D{{"userip", userCredential.UserIP}}
+	filter := bson.D{{Key: "userip", Value: userCredential.UserIP}}
 	err = credentialsCollection.FindOne(context.TODO(), filter).Decode(&userCredential)
 
 	if err == nil {
@@ -51,7 +51,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	usersCollection := client.Database("Judex").Collection("users")
 
 	var findResult User
-	filter = bson.D{{"username", userCredential.Username}}
+	filter = bson.D{{Key: "username", Value: userCredential.Username}}
 	err = usersCollection.FindOne(context.TODO(), filter).Decode(&findResult)
 
 	if err := templates.ExecuteTemplate(w, "profile.html", findResult); err != nil {

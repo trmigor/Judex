@@ -43,7 +43,7 @@ func SignInSubmit(w http.ResponseWriter, r *http.Request) {
 	usersCollection := client.Database("Judex").Collection("users")
 
 	var findResult User
-	filter := bson.D{{"username", formResult.Username}}
+	filter := bson.D{{Key: "username", Value: formResult.Username}}
 	err = usersCollection.FindOne(context.TODO(), filter).Decode(&findResult)
 
 	if err != nil {
@@ -82,7 +82,7 @@ func SignInSubmit(w http.ResponseWriter, r *http.Request) {
 
 	credentialsCollection := client.Database("Judex").Collection("credentials")
 
-	filter = bson.D{{"userip", userCredential.UserIP}}
+	filter = bson.D{{Key: "userip", Value: userCredential.UserIP}}
 	credentialsCollection.DeleteMany(context.TODO(), filter)
 
 	_, err = credentialsCollection.InsertOne(context.TODO(), userCredential)
