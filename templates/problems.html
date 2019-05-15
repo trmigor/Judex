@@ -42,10 +42,10 @@
                 {{ with . }}
                     {{ range . }}
                         <tr>
-                            <td style="width: 5%;">{{ .Number }}</td>
-                            <td style="width: 30%;">{{ .Name }}</td>
-                            <td>{{ .Author }}</td>
-                            <td>0</td>
+                            <td style="width: 5%;">{{ .Problem.Number }}</td>
+                            <td style="width: 30%;"><a href="/problem/{{ .Problem.Number }}">{{ .Problem.Name }}</a></td>
+                            <td>{{ .Problem.Author }}</td>
+                            <td>{{ .Score.Score }}</td>
                         </tr>
                     {{ end }}
                 {{ end }}

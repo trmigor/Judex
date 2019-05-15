@@ -23,7 +23,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userCredential := Credential{
+	userCredential := Credential {
 		UserIP: net.ParseIP(ip),
 	}
 

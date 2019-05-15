@@ -206,6 +206,14 @@ tr {
     border-color: #9f9f9f;
 }
 
+a {	
+	text-decoration: none;
+}
+
+a:visited{ color: #51079f;}
+a:active{ color: #51079f;}
+a:hover{ color: #51079f;}
+
 h1 {
     margin-left: 25px;
     margin-bottom: 10px;
