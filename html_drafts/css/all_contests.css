@@ -159,13 +159,13 @@ body {
 }
 
 .main {
-    width: calc(80% - 40px);
+    width: calc(90% - 40px);
     min-height: 300px;
 	min-width: 652px;
 
     position: absolute;
     top: 80px;
-    left: 10%;
+    left: 5%;
 
     margin-bottom: 100px;
 
@@ -178,24 +178,32 @@ body {
 }
 
 table {	
-	text-align:center;
-	width:95%;
-    !position: absolute;
-	margin-left: 2.5%;
+	text-align: center;
+	width: 95%;
+    margin-left: 2.5%;
+    
+    border-collapse: collapse; 
 }
 
 td {
 	width: 20%;
-	background-color: #ffffff;
     font-size: 20px;
 }
 
-hr {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	background: linear-gradient(to right, #51079f, #400a35);
-	height: 2px;
-	width:95%;
+tr:first-child {
+    border-width: 0px 0px 2px 0px;
+}
+
+tr:last-child {
+    border-width: 0px;
+}
+
+tr {
+    height: 50px;
+
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: #9f9f9f;
 }
 
 h1 {
