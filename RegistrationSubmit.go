@@ -22,7 +22,7 @@ func RegSubmit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Checking if the user wants to access /reg_submit without filling a form
+	// Checking if user wants to access /reg_submit without filling a form
 	if len(r.Form) == 0 {
 		log.Println("/reg_submit: Blank form")
 		http.Redirect(w, r, "/", http.StatusSeeOther)

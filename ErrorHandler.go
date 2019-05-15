@@ -12,6 +12,8 @@ const (
 	DoubledEmail int = 1101
 	// InsertError is an error for a case, when database insert fails
 	InsertError int = 1102
+	// UpdateError is an error for a case, when database update fails
+	UpdateError int = 1103
 
 	// NoUsername is an error for a case, when user tries to sign in with non existing username
 	NoUsername int = 1200
@@ -26,7 +28,8 @@ const (
        11xx: Database Error:
 		   1100 Doubled Username
 		   1101 Doubled Email
-           1102 Insert Error
+		   1102 Insert Error
+		   1103 Update error
        12xx: Client Error:
            1200 No Username
            1201 Wrong Password
@@ -62,6 +65,8 @@ func ErrorHandler(w http.ResponseWriter, r *http.Request, status int) {
 		}
 	case InsertError:
 		fmt.Fprint(w, "We cannot save your information")
+	case UpdateError:
+		fmt.Fprint(w, "We cannot update your information")
 	case NoUsername:
 		page := SignInPage{
 			Username:      "",
@@ -82,5 +87,7 @@ func ErrorHandler(w http.ResponseWriter, r *http.Request, status int) {
 		if err := templates.ExecuteTemplate(w, "sign_in.html", page); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
+	default:
+		fmt.Fprint(w, "Unknown error")
 	}
 }

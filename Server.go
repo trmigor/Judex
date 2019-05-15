@@ -138,6 +138,7 @@ func main() {
 	http.HandleFunc("/home", Home)
 	http.HandleFunc("/sign_out", SignOut)
 	http.HandleFunc("/profile", Profile)
+	http.HandleFunc("/change_submit", ChangeSubmit)
 
 	// Connecting to the database
 	client, err = mongo.Connect(context.TODO(), "mongodb://localhost:27017")
