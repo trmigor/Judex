@@ -1,0 +1,248 @@
+body {
+    margin: 0px;
+    background-color: #ffffff;
+    font-size: 14px;
+
+}
+
+.header {
+    width: 100%;
+    height: 50px;
+    margin: 0px;
+
+    border-style: groove;
+    border-width: 0px 0px 2px 0px;
+    border-color: #95ffe8;
+
+    border-image: linear-gradient(to left, #bfebb0, #95ffe8);
+    border-image-slice: 1;
+
+    background: linear-gradient(to right bottom, #51079f, #400a35);
+    color: #a8c6e2;
+    font-family: Helvetica;
+}
+
+.logo {
+    width: 130px;
+    height: 50px;
+
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+    margin: 0px;
+
+    border-style: ridge;
+    border-width: 0px 2px 0px 0px;
+    border-image: linear-gradient(to bottom, #bfebb0, #95ffe8);
+    border-image-slice: 1;
+
+    text-align: center;
+    line-height: 50px;
+
+    color: #95ffe8;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 4px;
+
+    background: linear-gradient(to left, #bfebb0, #95ffe8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.my_contests {
+	width: 110px;
+    height: 50px;
+
+    position: absolute;
+    left: 132px;
+    top: 0px;
+
+    margin: 0px;
+
+	border-style: ridge;
+    border-width: 0px 1px 0px 0px;
+    border-image: linear-gradient(to bottom, #bfebb0, #95ffe8);
+    border-image-slice: 1;
+
+    text-align: center;
+    line-height: 50px;
+
+    color: #95ffe8;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.all_contests {
+	width: 110px;
+    height: 50px;
+
+    position: absolute;
+    left: 243px;
+    top: 0px;
+
+    margin: 0px;
+
+	border-style: ridge;
+    border-width: 0px 1px 0px 0px;
+    border-image: linear-gradient(to bottom, #bfebb0, #95ffe8);
+    border-image-slice: 1;
+	
+    text-align: center;
+    line-height: 50px;
+
+    color: #95ffe8;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.problems {
+	width: 110px;
+    height: 50px;
+
+    position: absolute;
+    left: 353px;
+    top: 0px;
+
+    margin: 0px;
+
+	border-style: ridge;
+    border-width: 0px 1px 0px 0px;
+    border-image: linear-gradient(to bottom, #bfebb0, #95ffe8);
+    border-image-slice: 1;
+
+	
+    text-align: center;
+    line-height: 50px;
+
+    color: #95ffe8;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.sign_out_button {
+    width: 80px;
+    height: 30px;
+
+    position: absolute;
+    left: calc(100% - 185px);
+    top: -5px;
+    float: right;
+
+    text-align: center;
+    line-height: 30px;
+
+    color: #95ffe8;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.my_profile {    
+    width: 104px;
+    height: 50px;
+
+    position: absolute;
+    left: calc(100% - 105px);
+    top: -15px;
+
+    text-align: center;
+    line-height: 50px;
+	
+	border-style: ridge;
+    border-width: 0px 0px 0px 1px;
+    border-image: linear-gradient(to bottom, #bfebb0, #95ffe8);
+    border-image-slice: 1;
+
+    color: #95ffe8;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.main {
+    width: calc(90% - 40px);
+    min-height: 300px;
+	min-width: 652px;
+
+    position: absolute;
+    top: 80px;
+    left: 5%;
+
+    margin-bottom: 100px;
+
+    padding: 20px;
+
+    border-radius: 5px;
+
+    background-color: #e8ecef;
+	
+}
+
+table {	
+	text-align: center;
+	width: 95%;
+    margin-left: 2.5%;
+    
+    border-collapse: collapse; 
+}
+
+td {
+	width: 20%;
+    font-size: 20px;
+}
+
+tr:first-child {
+    border-width: 0px 0px 2px 0px;
+}
+
+tr:last-child {
+    border-width: 0px;
+}
+
+tr {
+    height: 50px;
+
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: #9f9f9f;
+}
+
+h1 {
+    margin-left: 25px;
+    margin-bottom: 10px;
+
+    font-family: Helvetica;
+    font-weight: 700;
+    font-size: 50px;
+    letter-spacing: 1px;
+}
+
+h2 {
+    margin-top: 10px;
+    margin-left: 25px;
+    margin-bottom: 10px;
+
+    font-family: Helvetica;
+    font-weight: 200;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.footer {
+    width: 100%;
+    height: 35px;
+
+    position: fixed;
+    bottom: 0px;
+
+    background: linear-gradient(to right bottom, #51079f, #400a35);
+    color: #a8c6e2;
+
+    font-family: Helvetica;
+    font-size: 12px;
+    text-align: right;
+}
+
+.copyright {
+    position: fixed;
+    left: calc(100% - 330px)
+}
