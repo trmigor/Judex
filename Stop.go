@@ -15,19 +15,19 @@ func Stop(sigs chan os.Signal, logFile *os.File) {
 		sig = <-sigs
 	}
 
-	// Database disconnection
-	err := client.Disconnect(context.TODO())
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Println("Connection to MongoDB closed.")
-
 	switch sig {
 	case os.Kill:
 		log.Println("Received os.Kill")
 	case os.Interrupt:
 		log.Println("Received os.Interrupt")
 	}
+
+	// Database disconnection
+	err := client.Disconnect(context.TODO())
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("Connection to MongoDB closed.")
 
 	// Closing the log file
 	log.Println("STOPPED")

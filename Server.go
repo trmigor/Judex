@@ -122,6 +122,7 @@ func main() {
 		templatePath + "/error404.html",
 		templatePath + "/home.html",
 		templatePath + "/profile.html",
+		templatePath + "/problems.html",
 	}
 
 	templates = template.Must(template.ParseFiles(templateNames...))
@@ -139,6 +140,7 @@ func main() {
 	http.HandleFunc("/sign_out", SignOut)
 	http.HandleFunc("/profile", Profile)
 	http.HandleFunc("/change_submit", ChangeSubmit)
+	http.HandleFunc("/problems", Problems)
 
 	// Connecting to the database
 	client, err = mongo.Connect(context.TODO(), "mongodb://localhost:27017")

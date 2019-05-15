@@ -3,8 +3,8 @@
 
     <head>
         <title>Problems</title>
-        <link rel="stylesheet" href="css/problems.css" type="text/css">
-        <link rel="shortcut icon" href="img/logo.png" type="image/png">
+        <link rel="stylesheet" href="/static/stylesheets/problems.css" type="text/css">
+        <link rel="shortcut icon" href="/static/stylesheets/logo.png" type="image/png">
     </head>
 
     <body>
@@ -12,16 +12,6 @@
             <a href="/">
                 <div>
                     <p class="logo">JUDEX</p>
-                </div>
-            </a>			
-            <a href="/my_contests">
-                <div>
-                    <p class="my_contests">My contests</p>
-                </div>
-            </a>
-			<a href="/all_contests">
-                <div>
-                    <p class="all_contests">All contests</p>
                 </div>
             </a>
 			<a href="/problems">
@@ -42,19 +32,23 @@
         </div>
 
         <div class="main">
-			<table>
-				<tr>
+            <table>
+                <tr>
                     <td style="width: 5%;">№</td>
                     <td style="width: 30%;">Name</td>
                     <td>Author</td>
                     <td>Score</td>
                 </tr>		
-				<tr>
-                    <td style="width: 5%;">№</td>
-                    <td style="width: 30%;">Lorem</td>
-                    <td>Ipsumfdgfhgjklfdgfhjhkl</td>
-                    <td>We'vesdfghjksdfghjkfghgjhk</td>
-                </tr>
+                {{ with . }}
+                    {{ range . }}
+                        <tr>
+                            <td style="width: 5%;">{{ .Number }}</td>
+                            <td style="width: 30%;">{{ .Name }}</td>
+                            <td>{{ .Author }}</td>
+                            <td>0</td>
+                        </tr>
+                    {{ end }}
+                {{ end }}
             </table>
         </div>
 

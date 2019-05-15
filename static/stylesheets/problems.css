@@ -1,23 +1,19 @@
 body {
     margin: 0px;
-
     background-color: #ffffff;
     font-size: 14px;
+
 }
 
 .header {
     width: 100%;
     height: 50px;
-
     margin: 0px;
 
     border-style: groove;
     border-width: 0px 0px 2px 0px;
     border-color: #95ffe8;
 
-	position: fixed;
-	z-index: 9999;
-	
     border-image: linear-gradient(to left, #bfebb0, #95ffe8);
     border-image-slice: 1;
 
@@ -52,27 +48,6 @@ body {
     background: linear-gradient(to left, #bfebb0, #95ffe8);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
-
-.sign_up_button {
-    width: 65px;
-    height: 30px;
-
-    position: absolute;
-    left: calc(100% - 85px);
-    top: -10px;
-
-    text-align: center;
-    line-height: 30px;
-
-    border-style: double;
-    border-width: 5px;
-    border-radius: 10px;
-
-    background: linear-gradient(to left bottom, #bfebb0, #95ffe8);
-
-    color: #400a35;
-    font-size: 16px;
 }
 
 .my_contests {
@@ -145,23 +120,6 @@ body {
     font-weight: 100;
 }
 
-.sign_in_button {
-    width: 60px;
-    height: 30px;
-
-    position: absolute;
-    left: calc(100% - 160px);
-    top: -5px;
-    float: right;
-
-    text-align: center;
-    line-height: 30px;
-
-    color: #95ffe8;
-    font-size: 16px;
-    font-weight: 100;
-}
-
 .sign_out_button {
     width: 80px;
     height: 30px;
@@ -180,7 +138,7 @@ body {
 }
 
 .my_profile {    
-    width: 105px;
+    width: 104px;
     height: 50px;
 
     position: absolute;
@@ -201,13 +159,13 @@ body {
 }
 
 .main {
-    width: calc(50% - 40px);
-    min-height: 400px;
-    min-width: 400px;
+    width: calc(90% - 40px);
+    min-height: 300px;
+	min-width: 652px;
 
     position: absolute;
     top: 80px;
-    left: 25%;
+    left: 5%;
 
     margin-bottom: 100px;
 
@@ -216,153 +174,57 @@ body {
     border-radius: 5px;
 
     background-color: #e8ecef;
+	
+}
+
+table {	
+	text-align: center;
+	width: 95%;
+    margin-left: 2.5%;
+    
+    border-collapse: collapse; 
+}
+
+td {
+	width: 25%;
+    font-size: 20px;
+}
+
+tr:first-child {
+    border-width: 0px 0px 2px 0px;
+}
+
+tr:last-child {
+    border-width: 0px;
+}
+
+tr {
+    height: 50px;
+
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: #9f9f9f;
 }
 
 h1 {
     margin-left: 25px;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 
     font-family: Helvetica;
     font-weight: 700;
-    font-size: 30px;
+    font-size: 50px;
     letter-spacing: 1px;
 }
 
-.sign_in_link {
-    width: 90%;
-
-    margin-left: calc(5px + 5%);
-    margin-top: 20px;
-
-    font-family: Helvetica;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 2;
-}
-
-.field {
-    width: 90%;
-
-    margin-left: 5%;
-    margin-top: 20px;
+h2 {
+    margin-top: 10px;
+    margin-left: 25px;
+    margin-bottom: 10px;
 
     font-family: Helvetica;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 2;
-}
-
-.field > sup {
-    color: #ff807b;
-}
-
-.field > input {
-    width: 100%;
-    height: 35px;
-
-    padding-left: 20px;
-
-    border-style: solid;
-    border-width: 1px;
-    border-color: #737373;
-    border-radius: 5px;
-
-    font-size: 14px;
-}
-
-.field > textarea {
-    width: 100%;
-
-    padding-top: 10px;
-    padding-left: 20px;
-
-    border-style: solid;
-    border-width: 1px;
-    border-color: #737373;
-    border-radius: 5px;
-
-    font-size: 14px;
-}
-
-.field::-moz-placeholder { color: #737373; }
-.field::-webkit-input-placeholder { color: #737373; }
-.field::-ms-input-placeholder { color: #737373; }
-.field::-ms-input-placeholder { color: #737373; }
-.field::placeholder { color: #737373; }
-
-.submit {
-    margin-top: 30px;
-    margin-left: 5%;
-
-    float: left;
-}
-
-.submit > input {
-    width: 140px;
-
-    padding: 8px;
-
-    border-radius: 5px;
-    border: double;
-    border-color: #b7b7b7;
-    border-width: 1px;
-
-    cursor: pointer;
-
-    background: linear-gradient(to left bottom, #bfebb0, #95ffe8);
-
-    font-family: Helvetica;
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-}
-
-a > input {
-    width: 140px;
-
-    margin-top: 30px;
-    margin-left: 30px;
-
-    padding: 8px;
-
-    border-radius: 5px;
-    border: double;
-    border-color: #b7b7b7;
-    border-width: 1px;
-
-    cursor: pointer;
-
-    background: #d4d4d4;
-
-    font-family: Helvetica;
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-}
-
-
-a {	
-	text-decoration: none;
-	
-}
-
-a:visited{ color: #51079f;}
-a:active{ color: #51079f;}
-a:hover{ color: #51079f;}
-
-input, textarea {
-    -webkit-transition: all 0.30s ease-in-out;
-    -moz-transition: all 0.30s ease-in-out;
-    -ms-transition: all 0.30s ease-in-out;
-    -o-transition: all 0.30s ease-in-out;
-    outline: none;
-}
-
-input:focus, textarea:focus {
-    box-shadow: 0 0 5px #51079f;
-    border: 1px solid #51079f;
+    font-weight: 200;
+    font-size: 20px;
+    letter-spacing: 1px;
 }
 
 .footer {
