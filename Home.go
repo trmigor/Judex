@@ -48,6 +48,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 
+	// Executing template
 	if err := templates.ExecuteTemplate(w, "home.html", ""); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

@@ -101,7 +101,7 @@ body {
     height: 50px;
 
     position: absolute;
-    left: 353px;
+    left: 132px;
     top: 0px;
 
     margin: 0px;
@@ -212,6 +212,18 @@ tr:first-child {
     border-width: 0px 0px 2px 0px;
 }
 
+tr:last-child {
+    border-width: 0px;
+}
+
+tr {
+    height: 50px;
+
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-color: #9f9f9f;
+}
+
 .example {
     margin: 0px 25px 30px 25px;
 }
@@ -223,18 +235,6 @@ th {
 
     border-style: none none solid none;
     border-width: 0px 0px 2px 0px;
-    border-color: #9f9f9f;
-}
-
-tr:last-child {
-    border-width: 0px;
-}
-
-tr {
-    height: 50px;
-
-    border-style: solid;
-    border-width: 0px 0px 1px 0px;
     border-color: #9f9f9f;
 }
 

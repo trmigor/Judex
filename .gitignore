@@ -22,3 +22,5 @@ go_drafts/*/*.elf
 go_drafts/*/*.prot
 go_drafts/testing
 .vscode
+problems
+solutions

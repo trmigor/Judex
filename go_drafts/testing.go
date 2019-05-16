@@ -30,7 +30,7 @@ func main() {
 	}
 	p, err := c.Compile()
 	fmt.Println("Hello World1", p, err)
-	time.Sleep(100*1000*1000)
+	time.Sleep(1000*1000*1000)
 	err = c.Run()
 	fmt.Println("Hello World2", err)
 }

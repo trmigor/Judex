@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"		// Output formatting
+	"fmt"		// I/O formatting
 	"net/http" 	// Server logic
 )
 

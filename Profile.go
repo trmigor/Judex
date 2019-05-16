@@ -18,7 +18,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	ip, _, err := net.SplitHostPort(r.RemoteAddr)
 
 	if err != nil {
-		log.Println("/home: Cannot discover user's IP")
+		log.Println("/profile: Cannot discover user's IP")
 		ErrorHandler(w, r, http.StatusInternalServerError)
 		return
 	}
@@ -28,7 +28,7 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if userCredential.UserIP == nil {
-		log.Println("/home: Cannot discover user's IP")
+		log.Println("/profile: Cannot discover user's IP")
 		ErrorHandler(w, r, http.StatusInternalServerError)
 		return
 	}
@@ -48,12 +48,14 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 
+	// Looking for user information
 	usersCollection := client.Database("Judex").Collection("users")
 
 	var findResult User
 	filter = bson.D{{Key: "username", Value: userCredential.Username}}
 	err = usersCollection.FindOne(context.TODO(), filter).Decode(&findResult)
 
+	// Executing template
 	if err := templates.ExecuteTemplate(w, "profile.html", findResult); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

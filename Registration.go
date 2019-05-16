@@ -57,6 +57,7 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 		EmailError: "none",
 	}
 
+	// Executing template
 	if err := templates.ExecuteTemplate(w, "registration.html", page); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

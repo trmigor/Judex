@@ -47,6 +47,8 @@ type Init struct {
 type Result struct {
 	TestNumber		int				// -- number of used test
 	ReturnedValue	int				// -- value returned from the process
+	Time			float64			// -- used time
+	Memory			int64			// -- used memory
 	Verdict			string			// -- result of limits and returned value checking
 	Checker			string			// -- result of answer checking
 }
@@ -159,7 +161,6 @@ func (c *Init) Run() (err error) {
 			// Recieving information from goroutines
 			result := <- resultChan
 
-			fmt.Println(":)")
 			// Checking answers
 			eq, err := checker(c.Path + strconv.Itoa(c.TestsNumber) + ".ans",
 								c.TestsPath + strconv.Itoa(c.TestsNumber) + ".res")
@@ -187,6 +188,8 @@ func (c *Init) Run() (err error) {
 		csvWriter.Write([]string{
 			strconv.Itoa(resultList[i].TestNumber),
 			strconv.Itoa(resultList[i].ReturnedValue),
+			fmt.Sprint(resultList[i].Time),
+			fmt.Sprint(resultList[i].Memory),
 			resultList[i].Verdict,
 			resultList[i].Checker,
 		})
@@ -275,6 +278,9 @@ func (c *Init) run(runName string, RunArgs []string, RunAttr *os.ProcAttr,
 	if result.ReturnedValue >= 0 && result.ReturnedValue != c.RequiredRet {
 		result.Verdict = "Run-time error (" + strconv.Itoa(result.ReturnedValue) + ")"
 	}
+
+	result.Time = time.Duration(status.Utime.Usec).Seconds()
+	result.Memory = status.Maxrss
 
 	// Result sending
 	resultChan <- result

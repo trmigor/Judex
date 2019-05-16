@@ -53,6 +53,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		credentialsCollection.DeleteMany(context.TODO(), filter)
 	}
 
+	// Executing template
 	if err := templates.ExecuteTemplate(w, "index.html", ""); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

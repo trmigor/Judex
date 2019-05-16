@@ -16,7 +16,7 @@ func SignOut(w http.ResponseWriter, r *http.Request) {
 	ip, _, err := net.SplitHostPort(r.RemoteAddr)
 
 	if err != nil {
-		log.Println("/SignIn_submit: Cannot discover user's IP")
+		log.Println("/sign_out: Cannot discover user's IP")
 		ErrorHandler(w, r, http.StatusInternalServerError)
 		return
 	}
@@ -28,7 +28,7 @@ func SignOut(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if userCredential.UserIP == nil {
-		log.Println("/SignIn_submit: Cannot discover user's IP")
+		log.Println("/sign_out: Cannot discover user's IP")
 		ErrorHandler(w, r, http.StatusInternalServerError)
 		return
 	}

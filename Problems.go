@@ -1,10 +1,10 @@
 package main
 
 import (
-	"net/http"
-	"log"
-	"time"
-	"net"
+	"log"			// Logs
+	"net"			// Server logic
+	"net/http"		// Server logic
+	"time"			// Timing
 
 	// Database
 	"context"
@@ -14,21 +14,21 @@ import (
 // Problem represents the problem data
 type Problem struct {
 	Number int
-	Name string
+	Name   string
 	Author string
 }
 
 // Score holds information about user's score for a problem
 type Score struct {
 	Problem int
-	User string
-	Score int
+	User    string
+	Score   int
 }
 
-// Row holds information for one output table line
-type Row struct {
+// ProblemsRow holds information for one output table line
+type ProblemsRow struct {
 	Problem Problem
-	Score Score
+	Score   Score
 }
 
 // Problems handles GET request for problems page
@@ -38,17 +38,17 @@ func Problems(w http.ResponseWriter, r *http.Request) {
 	ip, _, err := net.SplitHostPort(r.RemoteAddr)
 
 	if err != nil {
-		log.Println("/home: Cannot discover user's IP")
+		log.Println("/problems: Cannot discover user's IP")
 		ErrorHandler(w, r, http.StatusInternalServerError)
 		return
 	}
 
-	userCredential := Credential {
+	userCredential := Credential{
 		UserIP: net.ParseIP(ip),
 	}
 
 	if userCredential.UserIP == nil {
-		log.Println("/home: Cannot discover user's IP")
+		log.Println("/problems: Cannot discover user's IP")
 		ErrorHandler(w, r, http.StatusInternalServerError)
 		return
 	}
@@ -68,6 +68,7 @@ func Problems(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
 
+	// Looking for problems
 	problemsCollection := client.Database("Judex").Collection("problems")
 
 	filter = bson.D{}
@@ -99,12 +100,14 @@ func Problems(w http.ResponseWriter, r *http.Request) {
 
 	cur.Close(context.TODO())
 
-	var page []Row
+	// Preparing template
+	var page []ProblemsRow
 
+	// Looking for scores
 	scoresCollection := client.Database("Judex").Collection("scores")
-	
+
 	for _, v := range problems {
-		filter = bson.D {
+		filter = bson.D{
 			{Key: "problem", Value: v.Number},
 			{Key: "user", Value: userCredential.Username},
 		}
@@ -118,9 +121,10 @@ func Problems(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		page = append(page, Row {v, score})
-	} 
+		page = append(page, ProblemsRow{v, score})
+	}
 
+	// Executing template
 	if err := templates.ExecuteTemplate(w, "problems.html", page); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}

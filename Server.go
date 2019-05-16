@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"			// I/O formatting
 	"io"			// EOF
-	"strings"		// Strings splitting
+	"strings"		// Strings split
 	"html/template" // Html usage
 	"log"           // Logs
 	"net"           // Server logic
@@ -11,6 +11,7 @@ import (
 	"os"            // OS syscalls
 	"time"          // Timing
 	"os/signal"		// Signal handling
+	"path/filepath"	// Filepath join
 
 	// Database
 	"context"
@@ -49,7 +50,7 @@ var (
 	client *mongo.Client
 
 	// Server configure
-	logPath, templatePath, staticPath, emailPatterns string
+	logPath, templatePath, staticPath, emailPatterns, problemsPath, solutionsPath string
 )
 
 func main() {
@@ -80,12 +81,22 @@ func main() {
 			staticPath = value[1]
 		case "emailPatterns":
 			emailPatterns = value[1]
+		case "problemsPath":
+			problemsPath = value[1]
+		case "solutionsPath":
+			solutionsPath = value[1]
 		}
 	}
 
 	// Manual configure
 	args := os.Args
 
+	if len(args) >= 7 {
+		solutionsPath = args[6]
+	}
+	if len(args) >= 6 {
+		problemsPath = args[5]
+	}
 	if len(args) >= 5 {
 		emailPatterns = args[4]
 	}
@@ -100,7 +111,7 @@ func main() {
 	}
 
 	// Creating of a log file
-	logFile, err := os.OpenFile(logPath+"/logs.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	logFile, err := os.OpenFile(filepath.Join(logPath, "logs.log"), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -116,13 +127,14 @@ func main() {
 	// Enabling the HTML templates
 	// Slice of templates' names
 	templateNames := []string{
-		templatePath + "/index.html",
-		templatePath + "/registration.html",
-		templatePath + "/sign_in.html",
-		templatePath + "/error404.html",
-		templatePath + "/home.html",
-		templatePath + "/profile.html",
-		templatePath + "/problems.html",
+		filepath.Join(templatePath, "index.html"),
+		filepath.Join(templatePath, "registration.html"),
+		filepath.Join(templatePath, "sign_in.html"),
+		filepath.Join(templatePath, "error404.html"),
+		filepath.Join(templatePath, "home.html"),
+		filepath.Join(templatePath, "profile.html"),
+		filepath.Join(templatePath, "problems.html"),
+		filepath.Join(templatePath, "problem.html"),
 	}
 
 	templates = template.Must(template.ParseFiles(templateNames...))
@@ -141,6 +153,7 @@ func main() {
 	http.HandleFunc("/profile", Profile)
 	http.HandleFunc("/change_submit", ChangeSubmit)
 	http.HandleFunc("/problems", Problems)
+	http.HandleFunc("/problem/", SingleProblem)
 
 	// Connecting to the database
 	client, err = mongo.Connect(context.TODO(), "mongodb://localhost:27017")
