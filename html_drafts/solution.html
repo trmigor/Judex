@@ -2,8 +2,8 @@
 <html>
 
     <head>
-        <title>Post the solution</title>
-        <link rel="stylesheet" href="css/post.css" type="text/css">
+        <title>Solution</title>
+        <link rel="stylesheet" href="css/solution.css" type="text/css">
         <link rel="shortcut icon" href="img/logo.png" type="image/png">
     </head>
 
@@ -42,25 +42,40 @@
         </div>
 
 		<div class="main">
-			<h1>Post the solution</h1>
-			<h2>Solution</h2>
-			<div class="field">
-                    <input type="text" name="username" id="username" placeholder="..." required value autocomplete="off" />
-            </div>
-			<h2>Compiler</h2>
-			<div class="field">
-                    <input type="text" name="username" id="username" placeholder="..." required value autocomplete="off" />
-            </div>
+			<table>
+				<tr>
+					<td>Problem</td>
+                    <td>Sent</td>
+                    <td>Compiler</td>
+                    <td>Author</td>
+                </tr>		
+				<tr>
+                    <td>Problem's name</td>
+                    <td>№ years/months/days/hours ago</td>
+                    <td>Some compiler</td>
+                    <td>Hohol</td>
+                </tr>
+            </table>
+			<hr>
+			<table>
+				<tr>
+					<td class="done"><img src="img/done.svg" alt="Done" class="icons" style="margin-top: 5px;"></td>
+                    <td class="number">№</td>
+                    <td>Done</td>
+                    <td>Time</td>
+                    <td>Memory</td>
+                </tr>	
+            </table>
+        </div>
+
+		<div class="main_down">
 			<h2>Source code</h2>
+			<hr>
 			<div class="field">
                 <textarea rows="10" name="bio" id="bio" placeholder="Copy your source code here" value autocomplete="off"></textarea>
             </div>
-			<hr>
-			<div class="submit">
-                    <a href=""><input type="button" name="submit" id="submit" value="Send the solution"/></a>
-            </div>
         </div>
-
+		
         <div class="footer">
             <p class="copyright">&copy; Igor Taraymovich, Dmitry Gushchin, Kirill Puchkov - 2019</p>
         </div>
