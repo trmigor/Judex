@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="/static/stylesheets/registration.css" type="text/css">
         <link rel="shortcut icon" href="/static/stylesheets/logo.png" type="image/png">
         <script type="text/javascript" src="/static/scripts/registration.js"></script>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
 
     <body>
@@ -76,6 +77,7 @@
                     Bio<br />
                     <textarea rows="5" name="bio" id="bio" placeholder="Tell about yourself" value autocomplete="off"></textarea>
                 </div>
+                <div class="g-recaptcha" data-sitekey="6LfPPqQUAAAAALHka7xawqoEPMS1GGlLPei1tRON" style="margin-left: 5%; margin-top: 30px;"></div>
                 <div class="submit">
                     <input type="submit" name="submit" id="submit" value="Submit" onClick="validateSubmit()" />
                 </div>

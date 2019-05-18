@@ -13,6 +13,8 @@ import (
 	"os/signal"		// Signal handling
 	"path/filepath"	// Filepath join
 
+	"github.com/dpapathanasiou/go-recaptcha"
+
 	// Database
 	"context"
 	"github.com/mongodb/mongo-go-driver/mongo"
@@ -120,9 +122,19 @@ func main() {
 
 	log.Println("STARTED")
 
+	// Catching signals
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, os.Kill, os.Interrupt)
 	go Stop(sigs, logFile)
+
+	// Initializing reCAPTCHA
+	reCaptchaFile, err := os.OpenFile("reCAPTCHA_private", os.O_RDONLY, 0400)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var privateKey string
+	fmt.Fscanln(reCaptchaFile, &privateKey)
+	recaptcha.Init(privateKey)
 
 	// Enabling the HTML templates
 	// Slice of templates' names
@@ -135,6 +147,8 @@ func main() {
 		filepath.Join(templatePath, "profile.html"),
 		filepath.Join(templatePath, "problems.html"),
 		filepath.Join(templatePath, "problem.html"),
+		filepath.Join(templatePath, "post.html"),
+		filepath.Join(templatePath, "solution.html"),
 	}
 
 	templates = template.Must(template.ParseFiles(templateNames...))
@@ -154,6 +168,7 @@ func main() {
 	http.HandleFunc("/change_submit", ChangeSubmit)
 	http.HandleFunc("/problems", Problems)
 	http.HandleFunc("/problem/", SingleProblem)
+	http.HandleFunc("/post/", Post)
 
 	// Connecting to the database
 	client, err = mongo.Connect(context.TODO(), "mongodb://localhost:27017")

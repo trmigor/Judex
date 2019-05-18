@@ -118,7 +118,7 @@ h1 {
 }
 
 .field {
-    width: 90%;
+    width: calc(90% - 20px);
 
     margin-left: 5%;
     margin-top: 20px;
@@ -163,7 +163,7 @@ h1 {
 
 .error {
     height: 40px;
-    width: 90%;
+    width: calc(90% - 20px);
 
     margin-left: 5%;
     margin-top: 10px;

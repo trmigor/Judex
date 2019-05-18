@@ -74,7 +74,7 @@
                 {{ with .Solutions }}
                     {{ range . }}		
                         <tr>
-                            <td style="width: 5%;">{{ .Number }}</td>
+                            <td style="width: 5%;"><a href="/solutions/{{ .Number }}">{{ .Number }}</a></td>
                             <td style="width: 35%;">{{ .Posting }}</td>
                             <td style="width: 15%;">{{ .Time }}</td>
                             <td style="width: 15%;">{{ .Memory }}</td>
@@ -83,13 +83,16 @@
                     {{ end }}
                 {{ end }}
             </table>
+            <div class="submit">
+                    <a href="/post/{{ .Problem.Number }}"><input type="button" name="submit" id="submit" value="Send a solution"/></a>
+            </div>
         </div>
         {{ else }}
 		<div class="main_down">
 			<h2>My solutions</h2>
 			<p style="text-align:center; ">You haven't sent any solution for this problem yet</p>
 			<div class="submit">
-                    <a href=""><input type="button" name="submit" id="submit" value="Send the solution"/></a>
+                    <a href="/post/{{ .Problem.Number }}"><input type="button" name="submit" id="submit" value="Send a solution"/></a>
             </div>
         </div>
         {{ end }}

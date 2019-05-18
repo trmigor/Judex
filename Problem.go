@@ -9,6 +9,7 @@ import (
 	"strconv"		// String convertations
 	"fmt"			// I/O formatting
 	"path/filepath"	// Filepath join
+	"io/ioutil"		// Directory scan
 
 	// Database
 	"context"
@@ -186,12 +187,26 @@ func SingleProblem(w http.ResponseWriter, r *http.Request) {
 	page.Input = FileReader(filepath.Join(problemsPath, strconv.Itoa(problem.Number), "input.txt"))
 	page.Output = FileReader(filepath.Join(problemsPath, strconv.Itoa(problem.Number), "output.txt"))
 
-	for i := 1; ; i++ {
+	files, err := ioutil.ReadDir(filepath.Join(problemsPath,strconv.Itoa(problem.Number), "examples"))
+    if err != nil {
+        log.Fatal(err)
+	}
+
+	maxExample := 0
+
+	for _, v := range files {
+		number, _ := strconv.Atoi(strings.Split(v.Name(), ".")[0])
+		if number > maxExample {
+			maxExample = number
+		}
+	}
+
+	for i := 1; i <= maxExample; i++ {
 		var example IOExample
 
-		input := FileReader(filepath.Join(problemsPath,strconv.Itoa(problem.Number), "examples", strconv.Itoa(i) + ".in"))
+		input := FileReader(filepath.Join(problemsPath, strconv.Itoa(problem.Number), "examples", strconv.Itoa(i) + ".in"))
 
-		output := FileReader(filepath.Join(problemsPath,strconv.Itoa(problem.Number), "examples", strconv.Itoa(i) + ".out"))
+		output := FileReader(filepath.Join(problemsPath, strconv.Itoa(problem.Number), "examples", strconv.Itoa(i) + ".out"))
 
 		if input == "" || output == "" {
 			break

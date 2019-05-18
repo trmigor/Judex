@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="/static/stylesheets/sign_in.css" type="text/css">
         <link rel="shortcut icon" href="/static/stylesheets/logo.png" type="image/png">
         <script type="text/javascript" src="/static/scripts/sign_in.js"></script>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </head>
 
     <body>
@@ -44,6 +45,7 @@
                 <div class="error" style="display: {{.PasswordError}}; ">
                     Wrong password.
                 </div>
+                <div class="g-recaptcha" data-sitekey="6LfPPqQUAAAAALHka7xawqoEPMS1GGlLPei1tRON" style="margin-left: 5%; margin-top: 30px;"></div>
                 <div class="submit">
                     <input type="submit" name="submit" id="submit" value="Sign in" onClick="validateSubmit()" />
                 </div>

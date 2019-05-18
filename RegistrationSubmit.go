@@ -5,6 +5,7 @@ import (
 	"net"      // Server logic
 	"net/http" // Server logic
 	"time"     // Timing
+	"fmt"	   // I/O formatting
 
 	// Database
 	"context"
@@ -39,6 +40,22 @@ func RegSubmit(w http.ResponseWriter, r *http.Request) {
 		Company:    r.Form["company"][0],
 		Website:    r.Form["website"][0],
 		Bio:        r.Form["bio"][0],
+	}
+
+	// Checking reCAPTCHA
+	recaptchaResponse, responseFound := r.Form["g-recaptcha-response"]
+	if responseFound {
+		ip, _, err := net.SplitHostPort(r.RemoteAddr)
+		if err != nil {
+			log.Println("/sign_in_submit: Cannot discover user's IP")
+			ErrorHandler(w, r, http.StatusInternalServerError)
+			return
+		}
+		if !ProcessRequest(recaptchaResponse[0], ip) {
+			log.Println("Wrong reCAPTCHA")
+			fmt.Fprintln(w, "Wrong reCAPTCHA")
+			return
+		}
 	}
 
 	usersCollection := client.Database("Judex").Collection("users")

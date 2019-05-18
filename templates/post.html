@@ -3,8 +3,8 @@
 
     <head>
         <title>Judex::Post</title>
-        <link rel="stylesheet" href="css/post.css" type="text/css">
-        <link rel="shortcut icon" href="img/logo.png" type="image/png">
+        <link rel="stylesheet" href="/static/stylesheets/post.css" type="text/css">
+        <link rel="shortcut icon" href="/static/stylesheets/logo.png" type="image/png">
     </head>
 
     <body>
@@ -36,7 +36,7 @@
             <form action="/solution_submit" method="post">
                 <h2>Problem number</h2>
                 <div class="field">
-                        <input type="number" min="0" name="problem" id="problem" placeholder="..." required value autocomplete="off" />
+                        <input type="number" min="0" name="problem" id="problem" placeholder="..." required value="{{ . }}" autocomplete="off" />
                 </div>
 
                 <h2>Compiler</h2>

@@ -130,7 +130,7 @@ h1 {
 }
 
 .field {
-    width: 90%;
+    width: calc(90% - 20px);
 
     margin-left: 5%;
     margin-top: 20px;
@@ -161,6 +161,7 @@ h1 {
 
 .field > textarea {
     width: 100%;
+    resize: none;
 
     padding-top: 10px;
     padding-left: 20px;
@@ -256,7 +257,7 @@ input:focus, textarea:focus {
 
 .error {
     height: 40px;
-    width: 90%;
+    width: calc(90% - 20px);
 
     margin-left: 5%;
     margin-top: 10px;
