@@ -52,7 +52,7 @@ var (
 	client *mongo.Client
 
 	// Server configure
-	logPath, templatePath, staticPath, emailPatterns, problemsPath, solutionsPath string
+	logPath, templatePath, staticPath, emailPatterns, problemsPath, solutionsPath, tmpPath string
 )
 
 func main() {
@@ -87,12 +87,17 @@ func main() {
 			problemsPath = value[1]
 		case "solutionsPath":
 			solutionsPath = value[1]
+		case "tmpPath":
+			tmpPath = value[1]
 		}
 	}
 
 	// Manual configure
 	args := os.Args
 
+	if len(args) >= 8 {
+		tmpPath = args[7]
+	}
 	if len(args) >= 7 {
 		solutionsPath = args[6]
 	}
@@ -149,6 +154,8 @@ func main() {
 		filepath.Join(templatePath, "problem.html"),
 		filepath.Join(templatePath, "post.html"),
 		filepath.Join(templatePath, "solution.html"),
+		filepath.Join(templatePath, "solved.html"),
+		filepath.Join(templatePath, "users.html"),
 	}
 
 	templates = template.Must(template.ParseFiles(templateNames...))
@@ -169,6 +176,9 @@ func main() {
 	http.HandleFunc("/problems", Problems)
 	http.HandleFunc("/problem/", SingleProblem)
 	http.HandleFunc("/post/", Post)
+	http.HandleFunc("/solved/", Solved)
+	http.HandleFunc("/users", Users)
+	http.HandleFunc("/solution_submit", SolutionSubmit)
 
 	// Connecting to the database
 	client, err = mongo.Connect(context.TODO(), "mongodb://localhost:27017")

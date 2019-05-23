@@ -187,9 +187,9 @@ func SingleProblem(w http.ResponseWriter, r *http.Request) {
 	page.Input = FileReader(filepath.Join(problemsPath, strconv.Itoa(problem.Number), "input.txt"))
 	page.Output = FileReader(filepath.Join(problemsPath, strconv.Itoa(problem.Number), "output.txt"))
 
-	files, err := ioutil.ReadDir(filepath.Join(problemsPath,strconv.Itoa(problem.Number), "examples"))
+	files, err := ioutil.ReadDir(filepath.Join(problemsPath, strconv.Itoa(problem.Number), "examples"))
     if err != nil {
-        log.Fatal(err)
+        log.Println(err)
 	}
 
 	maxExample := 0
@@ -218,7 +218,7 @@ func SingleProblem(w http.ResponseWriter, r *http.Request) {
 		page.Examples = append(page.Examples, example)
 	}
 
-	limits := FileReader(filepath.Join(problemsPath,strconv.Itoa(problem.Number), "limits.lim"))
+	limits := FileReader(filepath.Join(problemsPath, strconv.Itoa(problem.Number), "limits.lim"))
 
 	if limits != "" {
 		fmt.Sscan(strings.Split(limits, "=")[1], &page.TimeLimit)

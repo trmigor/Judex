@@ -2,19 +2,19 @@
 package compileandrun
 
 import (
+	"bufio"        // Buffer input/output
+	"bytes"        // Bytes manipulations
+	"encoding/csv" // Protocoling
+	"errors"       // Errors manipulation
 	"fmt"
-	"os"				// OS syscalls
-	"os/exec"			// Executive file search
-	"strconv"			// String convertation
-	"syscall"			// OS syscalls
-	"time"				// Timing
-	"bufio"				// Buffer input/output
-	"bytes"				// Bytes manipulations
-	"errors"			// Errors manipulation
-	"encoding/csv"		// Protocoling
-	"runtime"			// Goroutines control
+	"os"            // OS syscalls
+	"os/exec"       // Executive file search
+	"path/filepath" // Filepath join
+	"runtime"       // Goroutines control
+	"strconv"       // String convertation
+	"syscall"       // OS syscalls
+	"time"          // Timing
 )
-
 
 /*
 	Structures
@@ -22,42 +22,40 @@ import (
 
 // Limits : Structure with limits of a run
 type Limits struct {
-	TL				time.Duration	// -- time limit
-	RTL 			time.Duration	// -- real time limit
-	ML				int64			// -- memory limit
+	TL  time.Duration // -- time limit
+	RTL time.Duration // -- real time limit
+	ML  int64         // -- memory limit
 }
 
 // Init : Initializing structure
 type Init struct {
-	Solution     	int				// -- number of tested solution
-	Format       	string			// -- solution file format (with a dot)
-	Path         	string			// -- path to the solution file
-	Compiler     	string			// -- chosen compiler
-	CompilerArgs 	[]string		// -- compiler command line arguments
-	CompilerAttr 	os.ProcAttr		// -- compiler attributes
-	TestsPath    	string			// -- path to tests data files
-	TestsNumber  	int				// -- number of tests
-	RunArgs     	[]string		// -- run command line arguments
-	RunAttr			os.ProcAttr		// -- run attributes
-	RequiredRet		int				// -- required return value
-	RunLimits		Limits			// -- run program limits
+	Solution     int         // -- number of tested solution
+	Format       string      // -- solution file format (with a dot)
+	Path         string      // -- path to the solution file
+	Compiler     string      // -- chosen compiler
+	CompilerArgs []string    // -- compiler command line arguments
+	CompilerAttr os.ProcAttr // -- compiler attributes
+	TestsPath    string      // -- path to tests data files
+	TestsNumber  int         // -- number of tests
+	RunArgs      []string    // -- run command line arguments
+	RunAttr      os.ProcAttr // -- run attributes
+	RequiredRet  int         // -- required return value
+	RunLimits    Limits      // -- run program limits
 }
 
 // Result : Reporting structure
 type Result struct {
-	TestNumber		int				// -- number of used test
-	ReturnedValue	int				// -- value returned from the process
-	Time			float64			// -- used time
-	Memory			int64			// -- used memory
-	Verdict			string			// -- result of limits and returned value checking
-	Checker			string			// -- result of answer checking
+	TestNumber    int     // -- number of used test
+	ReturnedValue int     // -- value returned from the process
+	Time          float64 // -- used time
+	Memory        int64   // -- used memory
+	Verdict       string  // -- result of limits and returned value checking
+	Checker       string  // -- result of answer checking
 }
-
 
 /*
 	Methods
 */
-
 
 // Compile : Method that compiles source code into the binary file
 // in ".elf" format. The source must be named like
@@ -66,10 +64,10 @@ type Result struct {
 // file will be named like "res_<solution_number>.elf"
 func (c *Init) Compile() (p *os.Process, err error) {
 	// Input format: "sol_<solution_number><format>"
-	path := c.Path + "sol_" + strconv.Itoa(c.Solution) + c.Format
+	path := filepath.Join(c.Path, "sol_"+strconv.Itoa(c.Solution)+c.Format)
 
 	// Output format: "res_<solution_number>.elf"
-	res := c.Path + "res_" + strconv.Itoa(c.Solution) + ".elf"
+	res := filepath.Join(c.Path, "res_"+strconv.Itoa(c.Solution)+".elf")
 
 	// Checking the existence of a source file
 	source, err := os.Open(path)
@@ -77,6 +75,10 @@ func (c *Init) Compile() (p *os.Process, err error) {
 		return nil, err
 	}
 	err = source.Close()
+
+	compOut, err := os.OpenFile(filepath.Join(c.Path, "comp.res"), os.O_RDWR | os.O_CREATE, 0666)
+
+	c.CompilerAttr.Files = []*os.File{os.Stdin, compOut, compOut}
 
 	switch c.Compiler {
 	/*
@@ -104,16 +106,37 @@ func (c *Init) Compile() (p *os.Process, err error) {
 			// Calling of a compiler
 			p, err = os.StartProcess(c.Compiler, args, &c.CompilerAttr)
 		}
+	case "g++":
+
+		/*
+			If the compiler exists in the PATH environment variable,
+			finds the relevant path to it
+		*/
+		if c.Compiler, err = exec.LookPath(c.Compiler); err == nil {
+			args := make([]string, 3)
+
+			args[0] = c.Compiler
+
+			// Redirection to resulting binary file
+			args[1] = "-o"
+			args[2] = res
+
+			args = append(args, c.CompilerArgs...)
+			args = append(args, path)
+
+			// Calling of a compiler
+			p, err = os.StartProcess(c.Compiler, args, &c.CompilerAttr)
+		}
 	}
 	return p, err
 }
 
-// Run : Method that runs the binary file like "res_<solution_number>.elf".
+// Run runs the binary file like "res_<solution_number>.elf".
 // It uses tests from Init.TestsPath like input if RunAttr.Files == <nil>.
 // Running for different tests is doing in different goroutines
 func (c *Init) Run() (err error) {
 	// Path to binary file
-	runName := c.Path + "res_" + strconv.Itoa(c.Solution) + ".elf"
+	runName := filepath.Join(c.Path, "res_"+strconv.Itoa(c.Solution)+".elf")
 
 	// Channel and list for testing results
 	resultChan := make(chan Result)
@@ -122,30 +145,36 @@ func (c *Init) Run() (err error) {
 	// Number of CPUs
 	numCPU := runtime.NumCPU()
 	for i := 1; i <= c.TestsNumber; {
-		for j := 0; j < numCPU - 1 && i <= c.TestsNumber; j++ {
+		for j := 0; j < numCPU-1 && i <= c.TestsNumber; j++ {
 			// Redirecting of input, output and error output
 			RunAttr := c.RunAttr
 			if c.RunAttr.Files == nil {
 				// Open tests file as input
-				input, err := os.OpenFile(c.TestsPath + strconv.Itoa(i) + ".dat", os.O_RDONLY, 0744)
+				input, err := os.OpenFile(filepath.Join(c.TestsPath, strconv.Itoa(i)+".dat"), os.O_RDONLY, 0744)
 				if err != nil {
 					return err
 				}
+
+				defer input.Close()
 
 				// Open output file
-				output, err := os.OpenFile(c.Path + strconv.Itoa(i) + ".ans", os.O_RDWR|os.O_CREATE, 0766)
+				output, err := os.OpenFile(filepath.Join(c.Path, strconv.Itoa(i) + ".ans"), os.O_RDWR | os.O_CREATE, 0766)
 				if err != nil {
 					return err
 				}
+
+				defer output.Close()
 
 				// Open error output file
-				error, err := os.OpenFile(c.Path + strconv.Itoa(i) + ".err", os.O_RDWR|os.O_CREATE, 0766)
+				errorf, err := os.OpenFile(filepath.Join(c.Path, strconv.Itoa(i) + ".err"), os.O_RDWR | os.O_CREATE, 0766)
 				if err != nil {
 					return err
 				}
 
+				defer errorf.Close()
+
 				// Set input, output and error output files for a run
-				RunAttr.Files = []*os.File{input, output, error}
+				RunAttr.Files = []*os.File{input, output, errorf}
 			}
 
 			// Set run arguments
@@ -157,13 +186,13 @@ func (c *Init) Run() (err error) {
 
 			// Running
 			go c.run(runName, args, &RunAttr, i, resultChan)
-			
+
 			// Recieving information from goroutines
-			result := <- resultChan
+			result := <-resultChan
 
 			// Checking answers
-			eq, err := checker(c.Path + strconv.Itoa(c.TestsNumber) + ".ans",
-								c.TestsPath + strconv.Itoa(c.TestsNumber) + ".res")
+			eq, err := checker(c.Path+strconv.Itoa(c.TestsNumber)+".ans",
+				c.TestsPath+strconv.Itoa(c.TestsNumber)+".res")
 			if eq && err == nil {
 				result.Checker = "OK"
 			}
@@ -176,14 +205,18 @@ func (c *Init) Run() (err error) {
 				result.Checker = "Cannot check: " + err.Error()
 			}
 
-			resultList[result.TestNumber - 1] = result
+			resultList[result.TestNumber-1] = result
 			i++
 		}
 	}
 
 	// Protocoling
-	protocol, err := os.OpenFile(c.Path + strconv.Itoa(c.Solution) + ".prot", os.O_RDWR | os.O_CREATE | os.O_TRUNC, 0766)
+	protocol, err := os.OpenFile(c.Path+strconv.Itoa(c.Solution)+".prot", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0766)
+
+
+
 	csvWriter := csv.NewWriter(bufio.NewWriter(protocol))
+
 	for i := range resultList {
 		csvWriter.Write([]string{
 			strconv.Itoa(resultList[i].TestNumber),
@@ -202,14 +235,13 @@ func (c *Init) Run() (err error) {
 	return err
 }
 
-
 /*
 	Helping functions
 */
 
 // Function, that runs a process and checks limits
 func (c *Init) run(runName string, RunArgs []string, RunAttr *os.ProcAttr,
-		testNum int, resultChan chan Result) {
+	testNum int, resultChan chan Result) {
 	// Setting timer
 	startTime := time.Now()
 
@@ -217,10 +249,10 @@ func (c *Init) run(runName string, RunArgs []string, RunAttr *os.ProcAttr,
 	pid, err := os.StartProcess(runName, RunArgs, RunAttr)
 
 	if err != nil {
-		resultChan <- Result {
-			TestNumber:		testNum,
-			ReturnedValue:	-1,
-			Verdict:		"Cannot start run: " + err.Error(),
+		resultChan <- Result{
+			TestNumber:    testNum,
+			ReturnedValue: -1,
+			Verdict:       "Cannot start run: " + err.Error(),
 		}
 		return
 	}
@@ -233,24 +265,24 @@ func (c *Init) run(runName string, RunArgs []string, RunAttr *os.ProcAttr,
 	pState, err := pid.Wait()
 
 	if err != nil {
-		resultChan <- Result {
-			TestNumber:		testNum,
-			ReturnedValue:	-1,
-			Verdict:		"Cannot wait for running end: " + err.Error(),
+		resultChan <- Result{
+			TestNumber:    testNum,
+			ReturnedValue: -1,
+			Verdict:       "Cannot wait for running end: " + err.Error(),
 		}
 		return
 	}
 
 	// Stopping timer
 	endTime := time.Now()
-	
-	_ = <- done
+
+	_ = <-done
 
 	// Standart result
-	result := Result {
-		TestNumber:		testNum,
-		ReturnedValue:	pState.ExitCode(),
-		Verdict:		"OK",
+	result := Result{
+		TestNumber:    testNum,
+		ReturnedValue: pState.ExitCode(),
+		Verdict:       "OK",
 	}
 
 	// Process resources usage
@@ -291,7 +323,7 @@ func (c *Init) run(runName string, RunArgs []string, RunAttr *os.ProcAttr,
 func killTooLong(pid *os.Process, RunLimits Limits, done chan string) {
 	// Wait ten times a real time limit
 	for i := 0; i < 100; i++ {
-		time.Sleep(10*RunLimits.RTL/100)
+		time.Sleep(10 * RunLimits.RTL / 100)
 		// If process is still active, kill it
 		if _, err := os.FindProcess(pid.Pid); err == nil {
 			pid.Kill()

@@ -55,6 +55,10 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	filter = bson.D{{Key: "username", Value: userCredential.Username}}
 	err = usersCollection.FindOne(context.TODO(), filter).Decode(&findResult)
 
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
 	// Executing template
 	if err := templates.ExecuteTemplate(w, "profile.html", findResult); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

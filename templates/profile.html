@@ -19,7 +19,12 @@
 				<div>
 					<p class="problems">Problems</p>
 				</div>
-			</a>
+            </a>
+            <a href="/users">
+                <div>
+                    <p class="all_contests">Users</p>
+                </div>
+            </a>
 			<a href="/sign_out">
 				<div>
 					<p class="sign_out_button">Sign out</p>
@@ -35,6 +40,11 @@
         <div class="main">
             <h1>Information about you</h1>
             <form action="/change_submit" method="post">
+                <a href="/solved">
+                    <div class="field" style="font-size: 20px; text-align: center;">
+                        Click to see solved problems
+                    </div>
+                </a>
                 <div class="field">
                     Username <br/>
                     <input type="text" name="username" id="username" value="{{.Username}}" placeholder="..." required value autocomplete="off" readonly />

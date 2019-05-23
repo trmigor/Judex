@@ -19,6 +19,11 @@
                     <p class="problems">Problems</p>
                 </div>
             </a>
+            <a href="/users">
+                <div>
+                    <p class="all_contests">Users</p>
+                </div>
+            </a>
             <a href="/sign_out">
                 <div>
                     <p class="sign_out_button">Sign out</p>
@@ -33,7 +38,7 @@
 
 		<div class="main">
             <h1>Post the solution</h1>
-            <form action="/solution_submit" method="post">
+            <form enctype="multipart/form-data" action="/solution_submit" method="post">
                 <h2>Problem number</h2>
                 <div class="field">
                         <input type="number" min="0" name="problem" id="problem" placeholder="..." required value="{{ . }}" autocomplete="off" />
@@ -43,16 +48,12 @@
                 <div class="field">
                     <select name="Compiler">
                         <option value="gcc">GCC</option>
+                        <option value="g++">G++</option>
                     </select>
                 </div>
-
-                <h2>Source code</h2>
-                <div class="field">
-                    <textarea rows="20" name="bio" id="bio" placeholder="Copy your source code here" value autocomplete="off"></textarea>
-                </div>
-
-                <label class="field" id="#bb">
-                    Or upload your source file
+                <h2>Source file</h2>
+                <label class="field" id="#bb" style="color: #51079f;">
+                    Click to upload your source file
                     <input type="file" name="sol_file" id="sol_file" value autocomplete="off" />
                 </label>
 

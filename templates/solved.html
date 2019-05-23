@@ -2,7 +2,7 @@
 <html>
 
     <head>
-        <title>Judex::Problems</title>
+        <title>Judex::Solved</title>
         <link rel="stylesheet" href="/static/stylesheets/problems.css" type="text/css">
         <link rel="shortcut icon" href="/static/stylesheets/logo.png" type="image/png">
     </head>
@@ -37,25 +37,29 @@
         </div>
 
         <div class="main">
-            <h1>Problems</h1>
-            <table>
-                <tr>
-                    <td style="width: 5%;">№</td>
-                    <td style="width: 30%;">Name</td>
-                    <td>Author</td>
-                    <td>Score</td>
-                </tr>		
-                {{ with . }}
-                    {{ range . }}
-                        <tr>
-                            <td style="width: 5%;">{{ .Problem.Number }}</td>
-                            <td style="width: 30%;"><a href="/problem/{{ .Problem.Number }}">{{ .Problem.Name }}</a></td>
-                            <td>{{ .Problem.Author }}</td>
-                            <td>{{ .Score.Score }} %</td>
-                        </tr>
+            <h1>Solved: {{ .User }}</h1>
+            {{ if .Any }}
+                <table>
+                    <tr>
+                        <td style="width: 5%;">№</td>
+                        <td style="width: 30%;">Name</td>
+                        <td>Author</td>
+                        <td>Score</td>
+                    </tr>		
+                    {{ with .Solved }}
+                        {{ range . }}
+                            <tr>
+                                <td style="width: 5%;">{{ .Problem.Number }}</td>
+                                <td style="width: 30%;"><a href="/problem/{{ .Problem.Number }}">{{ .Problem.Name }}</a></td>
+                                <td>{{ .Problem.Author }}</td>
+                                <td>{{ .Score.Score }} %</td>
+                            </tr>
+                        {{ end }}
                     {{ end }}
-                {{ end }}
-            </table>
+                </table>
+            {{ else }}
+                <h2 style="margin-top: 40px;">Nothing to show.<br><a href="/problems">Start to solve!</a></h2>
+            {{ end }}
         </div>
 
         <div class="footer">

@@ -2,9 +2,9 @@
 <html>
 
     <head>
-        <title>Judex::Problems</title>
-        <link rel="stylesheet" href="/static/stylesheets/problems.css" type="text/css">
-        <link rel="shortcut icon" href="/static/stylesheets/logo.png" type="image/png">
+        <title>Problems</title>
+        <link rel="stylesheet" href="css/users.css" type="text/css">
+        <link rel="shortcut icon" href="img/logo.png" type="image/png">
     </head>
 
     <body>
@@ -37,24 +37,17 @@
         </div>
 
         <div class="main">
-            <h1>Problems</h1>
-            <table>
-                <tr>
+			<table>
+				<tr>
                     <td style="width: 5%;">№</td>
-                    <td style="width: 30%;">Name</td>
-                    <td>Author</td>
-                    <td>Score</td>
+                    <td style="width: 30%;">Username</td>
+                    <td>Solved</td>
                 </tr>		
-                {{ with . }}
-                    {{ range . }}
-                        <tr>
-                            <td style="width: 5%;">{{ .Problem.Number }}</td>
-                            <td style="width: 30%;"><a href="/problem/{{ .Problem.Number }}">{{ .Problem.Name }}</a></td>
-                            <td>{{ .Problem.Author }}</td>
-                            <td>{{ .Score.Score }} %</td>
-                        </tr>
-                    {{ end }}
-                {{ end }}
+				<tr>
+                    <td style="width: 5%;">{{ .Number }}</td>
+                    <td style="width: 30%;">{{ .Username }}</td>
+                    <td><a href="/solved/{{ .Username }}">{{ .Solved }}</a></td>
+                </tr>
             </table>
         </div>
 

@@ -1,11 +1,9 @@
 package main
 
 import (
+	"io/ioutil"
 	"os"		// OS syscalls
-	"io"		// EOF
 	"log"		// Logs
-	"fmt"		// I/O formatting
-	"bufio"		// Buffered I/O
 )
 
 // FileReader reads file and saves its text to a string
@@ -20,25 +18,6 @@ func FileReader(path string) string {
 
 	defer file.Close()
 
-	// Creating a new reader
-	reader := bufio.NewReader(file)
-
-	msg := ""
-
-	// Reading line by line
-	for {
-		input, err := reader.ReadString('\n')
-
-		if err == io.EOF {
-			break
-		}
-
-		if err != nil {
-			log.Println("Reading:", err)
-			return ""
-		}
-
-		msg += fmt.Sprint(input)
-	}
-	return msg
+	msg, err := ioutil.ReadAll(file)
+	return string(msg)
 }
