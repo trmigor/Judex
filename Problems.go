@@ -28,7 +28,7 @@ type Score struct {
 // ProblemsRow holds information for one output table line
 type ProblemsRow struct {
 	Problem Problem
-	Score   int
+	Score   Score
 }
 
 // Problems handles GET request for problems page
@@ -123,7 +123,7 @@ func Problems(w http.ResponseWriter, r *http.Request) {
 
 		for cur.Next(context.TODO()) {
 			var elem Solution
-			err := cur.Decode(&elem)
+			cur.Decode(&elem)
 
 			if elem.Score > maxScore {
 				maxScore = elem.Score
@@ -131,7 +131,7 @@ func Problems(w http.ResponseWriter, r *http.Request) {
 
 		}
 
-		page = append(page, ProblemsRow{v, maxScore})
+		page = append(page, ProblemsRow{v, Score{Score: maxScore}})
 	}
 
 	// Executing template
