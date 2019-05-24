@@ -3,8 +3,8 @@
 
     <head>
         <title>Solution</title>
-        <link rel="stylesheet" href="css/solution.css" type="text/css">
-        <link rel="shortcut icon" href="img/logo.png" type="image/png">
+        <link rel="stylesheet" href="/static/stylesheets/solution.css" type="text/css">
+        <link rel="shortcut icon" href="/static/stylesheets/logo.png" type="image/png">
     </head>
 
     <body>
@@ -39,16 +39,16 @@
 		<div class="main">
 			<table>
 				<tr class="no_border">
-					<td>Problem</td>
-                    <td>Sent</td>
+					<td style="width: 10%;">Problem</td>
+                    <td style="width: 30%;">Sent</td>
                     <td>Compiler</td>
-                    <td>Author</td>
+                    <td>Submitted by</td>
                 </tr>		
 				<tr class="no_border">
-                    <td><a href="/problems/{{ .Problem.Number }}">{{ .Problem.Name }}</a></td>
-                    <td>{{ .PostTime }}</td>
+                    <td style="width: 10%;"><a href="/problems/{{ .Problem.Number }}">{{ .Problem.Name }}</a></td>
+                    <td style="width: 30%;">{{ .PostTime }}</td>
                     <td>{{ .Compiler }}</td>
-                    <td>{{ .Author }}</td>
+                    <td>{{ .User }}</td>
                 </tr>
             </table>
 			
@@ -57,10 +57,10 @@
                     {{ range . }}
                         <tr>
                             <td class="done"><img src="/static/stylesheets/{{ if .Passed }}done.svg{{ else }}nope.svg{{ end }}" class="icons" style="margin-top: 5px;"></td>
-                            <td class="number">#1</td>
+                            <td class="number">{{ .Number }}</td>
                             <td>{{ .Verdict }}</td>
-                            <td>{{ .Time }}</td>
-                            <td>{{ .Memory }}</td>
+                            <td>{{ .Time }} s</td>
+                            <td>{{ .Memory }} KiB</td>
                         </tr>
                     {{ end }}
                 {{ end }}
@@ -68,8 +68,8 @@
                     <td class="done"></td>
                     <td class="number"></td>
                     <td>{{ .Passed }} ({{ .Score }}%)</td>
-                    <td>{{ .MaxTime }}</td>
-                    <td>{{ .MaxMemory }}</td>
+                    <td>{{ .MaxTime }} s</td>
+                    <td>{{ .MaxMemory }} KiB</td>
                 </tr>
             </table>
         </div>

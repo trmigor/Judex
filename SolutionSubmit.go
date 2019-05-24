@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/trmigor/Judex/testing_packages/compileandrun"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -14,6 +13,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"net"
+	"encoding/csv"
 )
 
 // SolutionForm holds information received from a request
@@ -25,7 +26,42 @@ type SolutionForm struct {
 
 // SolutionSubmit handles POST request of sending a solution, checks it and forms a protocol
 func SolutionSubmit(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseMultipartForm(32 << 20)
+	// Checking credentials
+	// If user is not logged in, redirect to start page
+	ip, _, err := net.SplitHostPort(r.RemoteAddr)
+
+	if err != nil {
+		log.Println("/home: Cannot discover user's IP")
+		ErrorHandler(w, r, http.StatusInternalServerError)
+		return
+	}
+
+	userCredential := Credential {
+		UserIP: net.ParseIP(ip),
+	}
+
+	if userCredential.UserIP == nil {
+		log.Println("/home: Cannot discover user's IP")
+		ErrorHandler(w, r, http.StatusInternalServerError)
+		return
+	}
+
+	credentialsCollection := client.Database("Judex").Collection("credentials")
+
+	filter := bson.D{{Key: "userip", Value: userCredential.UserIP}}
+	err = credentialsCollection.FindOne(context.TODO(), filter).Decode(&userCredential)
+
+	if err == nil {
+		if time.Now().After(userCredential.EndTime) {
+			http.Redirect(w, r, "/", http.StatusSeeOther)
+			credentialsCollection.DeleteMany(context.TODO(), filter)
+			return
+		}
+	} else {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+	}
+
+	err = r.ParseMultipartForm(32 << 20)
 
 	if err != nil {
 		log.Println("/reg_submit: Cannot parse registration form:", err)
@@ -44,7 +80,6 @@ func SolutionSubmit(w http.ResponseWriter, r *http.Request) {
 
 	formResult := SolutionForm{
 		Problem: problemNumber,
-		//Compiler: r.Form["compiler"][0],
 	}
 
 	solutionsCollection := client.Database("Judex").Collection("solutions")
@@ -57,6 +92,7 @@ func SolutionSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	maxNumber := 0
+	maxScore := 0
 
 	for cur.Next(context.TODO()) {
 		var elem Solution
@@ -70,6 +106,10 @@ func SolutionSubmit(w http.ResponseWriter, r *http.Request) {
 
 		if elem.Number > maxNumber {
 			maxNumber = elem.Number
+		}
+
+		if elem.Score > maxScore {
+			maxScore = elem.Score
 		}
 	}
 
@@ -102,7 +142,7 @@ func SolutionSubmit(w http.ResponseWriter, r *http.Request) {
 
 	filePath := filepath.Join(solutionsPath, strconv.Itoa(maxNumber), "sol_"+strconv.Itoa(maxNumber)+"."+extension)
 
-	f1, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)
+	f1, err := os.OpenFile(filePath, os.O_RDWR | os.O_CREATE, 0666)
 
 	if err != nil {
 		log.Println(err)
@@ -111,9 +151,7 @@ func SolutionSubmit(w http.ResponseWriter, r *http.Request) {
 
 	defer f1.Close()
 
-	io.Copy(f1, file)
-
-	f2, err := os.OpenFile(filepath.Join(tmpPath, strconv.Itoa(maxNumber), "sol_"+strconv.Itoa(maxNumber)+"."+extension), os.O_WRONLY|os.O_CREATE, 0666)
+	f2, err := os.OpenFile(filepath.Join(tmpPath, strconv.Itoa(maxNumber), "sol_" + strconv.Itoa(maxNumber)+ "." + extension), os.O_RDWR | os.O_CREATE, 0666)
 
 	if err != nil {
 		log.Println(err)
@@ -122,7 +160,11 @@ func SolutionSubmit(w http.ResponseWriter, r *http.Request) {
 
 	defer f2.Close()
 
-	io.Copy(f2, file)
+	msg, err := ioutil.ReadAll(file)
+
+	f1.Write(msg)
+
+	f2.Write(msg)
 
 	files, err := ioutil.ReadDir(filepath.Join(problemsPath, strconv.Itoa(formResult.Problem), "tests"))
 
@@ -147,13 +189,132 @@ func SolutionSubmit(w http.ResponseWriter, r *http.Request) {
 		Path:        filepath.Join(tmpPath, strconv.Itoa(maxNumber)),
 		Compiler:    "gcc",
 		TestsPath:   filepath.Join(problemsPath, strconv.Itoa(formResult.Problem), "tests"),
-		TestsNumber: len(files),
+		TestsNumber: len(files) / 2,
 		RunLimits: compileandrun.Limits{
 			TL:  TL * time.Second,
 			ML:  ML * 1024 * 1024,
 			RTL: 10 * time.Second,
 		},
 	}
-	c.Compile()
+	p, err := c.Compile()
 
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	p.Wait()
+
+	err = c.Run()
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	protocol, err := os.OpenFile(filepath.Join(tmpPath, strconv.Itoa(maxNumber), strconv.Itoa(maxNumber) + ".prot"), os.O_RDWR | os.O_CREATE, 0666)
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	defer protocol.Close()
+
+	csvReader := csv.NewReader(protocol)
+
+	results, err := csvReader.ReadAll()
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	var maxTime float64
+	var maxMemory int64
+
+	var ok int
+
+	status := ""
+
+	for _, v := range results {
+		var testTime float64
+		fmt.Sscan(v[2], &testTime)
+		if testTime > maxTime {
+			maxTime = testTime
+		}
+
+		var testMem int64
+		fmt.Sscan(v[3], &testMem)
+		if testMem > maxMemory {
+			maxMemory = testMem
+		}
+
+		if v[4] != "OK" && status == "" {
+			status = v[4]
+		}
+
+		if v[5] != "OK" && status == "" {
+			status = "Partial solution"
+		}
+
+		if v[4] == "OK" && v[5] == "OK" {
+			ok++
+			status = "OK"
+		}
+	}
+
+	postingTime := time.Now()
+
+	score := ok * 100 / len(results)
+
+	result := Solution {
+		Number: maxNumber,
+		Problem: formResult.Problem,
+		User: userCredential.Username,
+		Posting: postingTime,
+		Time: maxTime,
+		Memory: maxMemory,
+		Status: status,
+		Score: score,
+	}
+
+	solutionsCollection.InsertOne(context.TODO(), result)
+
+	if score > maxScore {
+		update := bson.D {
+			{Key: "$set", Value: bson.D {
+				{Key: "problem", Value: formResult.Problem},
+				{Key: "user", Value: userCredential.Username},
+				{Key: "score", Value: score},
+			}},
+		}
+
+		filter = bson.D{
+			{Key: "problem", Value: formResult.Problem},
+			{Key: "user", Value: userCredential.Username},
+		}
+
+		scoresCollection := client.Database("Judex").Collection("scores")
+
+		scoresCollection.UpdateOne(context.TODO(), filter, update)
+	}
+
+
+	newProtocol, err := os.OpenFile(filepath.Join(solutionsPath, strconv.Itoa(maxNumber), strconv.Itoa(maxNumber) + ".prot"), os.O_RDWR | os.O_CREATE, 0666)
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	defer newProtocol.Close()
+
+	msg = []byte(FileReader(filepath.Join(tmpPath, strconv.Itoa(maxNumber), strconv.Itoa(maxNumber) + ".prot")))
+
+	//fmt.Println(msg)
+
+	newProtocol.Write(msg)
+	
+	http.Redirect(w, r, "/solutions/" + strconv.Itoa(maxNumber), http.StatusSeeOther)
 }

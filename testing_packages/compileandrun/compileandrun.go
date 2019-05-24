@@ -7,6 +7,7 @@ import (
 	"encoding/csv" // Protocoling
 	"errors"       // Errors manipulation
 	"fmt"
+	"log"
 	"os"            // OS syscalls
 	"os/exec"       // Executive file search
 	"path/filepath" // Filepath join
@@ -72,6 +73,7 @@ func (c *Init) Compile() (p *os.Process, err error) {
 	// Checking the existence of a source file
 	source, err := os.Open(path)
 	if err != nil {
+		log.Println("Compile():", err)
 		return nil, err
 	}
 	err = source.Close()
@@ -152,6 +154,7 @@ func (c *Init) Run() (err error) {
 				// Open tests file as input
 				input, err := os.OpenFile(filepath.Join(c.TestsPath, strconv.Itoa(i)+".dat"), os.O_RDONLY, 0744)
 				if err != nil {
+					log.Println("Run():", err)
 					return err
 				}
 
@@ -160,6 +163,7 @@ func (c *Init) Run() (err error) {
 				// Open output file
 				output, err := os.OpenFile(filepath.Join(c.Path, strconv.Itoa(i) + ".ans"), os.O_RDWR | os.O_CREATE, 0766)
 				if err != nil {
+					log.Println("Run():", err)
 					return err
 				}
 
@@ -168,6 +172,7 @@ func (c *Init) Run() (err error) {
 				// Open error output file
 				errorf, err := os.OpenFile(filepath.Join(c.Path, strconv.Itoa(i) + ".err"), os.O_RDWR | os.O_CREATE, 0766)
 				if err != nil {
+					log.Println("Run():", err)
 					return err
 				}
 
@@ -191,8 +196,8 @@ func (c *Init) Run() (err error) {
 			result := <-resultChan
 
 			// Checking answers
-			eq, err := checker(c.Path+strconv.Itoa(c.TestsNumber)+".ans",
-				c.TestsPath+strconv.Itoa(c.TestsNumber)+".res")
+			eq, err := checker(filepath.Join(c.Path,strconv.Itoa(c.TestsNumber)+".ans"),
+				filepath.Join(c.TestsPath, strconv.Itoa(c.TestsNumber)+".res"))
 			if eq && err == nil {
 				result.Checker = "OK"
 			}
@@ -211,9 +216,7 @@ func (c *Init) Run() (err error) {
 	}
 
 	// Protocoling
-	protocol, err := os.OpenFile(c.Path+strconv.Itoa(c.Solution)+".prot", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0766)
-
-
+	protocol, err := os.OpenFile(filepath.Join(c.Path, strconv.Itoa(c.Solution)+".prot"), os.O_RDWR|os.O_CREATE, 0766)
 
 	csvWriter := csv.NewWriter(bufio.NewWriter(protocol))
 
@@ -227,6 +230,7 @@ func (c *Init) Run() (err error) {
 			resultList[i].Checker,
 		})
 		if err = csvWriter.Error(); err != nil {
+			log.Println("Run():", err)
 			return err
 		}
 	}
@@ -249,6 +253,7 @@ func (c *Init) run(runName string, RunArgs []string, RunAttr *os.ProcAttr,
 	pid, err := os.StartProcess(runName, RunArgs, RunAttr)
 
 	if err != nil {
+		log.Println("Run():", err)
 		resultChan <- Result{
 			TestNumber:    testNum,
 			ReturnedValue: -1,
@@ -265,6 +270,7 @@ func (c *Init) run(runName string, RunArgs []string, RunAttr *os.ProcAttr,
 	pState, err := pid.Wait()
 
 	if err != nil {
+		log.Println("Run():", err)
 		resultChan <- Result{
 			TestNumber:    testNum,
 			ReturnedValue: -1,
@@ -312,7 +318,7 @@ func (c *Init) run(runName string, RunArgs []string, RunAttr *os.ProcAttr,
 	}
 
 	result.Time = time.Duration(status.Utime.Usec).Seconds()
-	result.Memory = status.Maxrss
+	result.Memory = status.Maxrss / 1024
 
 	// Result sending
 	resultChan <- result
@@ -338,12 +344,14 @@ func killTooLong(pid *os.Process, RunLimits Limits, done chan string) {
 func checker(fileName1, fileName2 string) (res bool, err error) {
 	file1, err := os.OpenFile(fileName1, os.O_RDONLY, 0766)
 	if err != nil {
+		log.Println("Run():", err)
 		return false, errors.New("checker: cannot open file: " + fileName1)
 	}
 	defer file1.Close()
 
 	file2, err := os.OpenFile(fileName2, os.O_RDONLY, 0766)
 	if err != nil {
+		log.Println("Run():", err)
 		return false, errors.New("checker: cannot open file: " + fileName2)
 	}
 	defer file2.Close()

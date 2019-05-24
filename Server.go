@@ -179,6 +179,7 @@ func main() {
 	http.HandleFunc("/solved/", Solved)
 	http.HandleFunc("/users", Users)
 	http.HandleFunc("/solution_submit", SolutionSubmit)
+	http.HandleFunc("/solutions/", SingleSolution)
 
 	// Connecting to the database
 	client, err = mongo.Connect(context.TODO(), "mongodb://localhost:27017")
