@@ -8,6 +8,6 @@ install:
 	mkdir -pv /var/www/judex.vdi.mipt.ru/solutions
 
 configure:
-	cp templates/* /var/www/judex.vdi.mipt.ru/html/template
-	cp static/* /var/www/judex.vdi.mipt.ru/html/static
-	cp emails/* /var/www/judex.vdi.mipt.ru/emails
+	cp -r templates/* /var/www/judex.vdi.mipt.ru/html/template
+	cp -r static/* /var/www/judex.vdi.mipt.ru/html/static
+	cp -r emails/* /var/www/judex.vdi.mipt.ru/emails
