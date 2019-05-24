@@ -297,8 +297,26 @@ func SolutionSubmit(w http.ResponseWriter, r *http.Request) {
 
 		scoresCollection := client.Database("Judex").Collection("scores")
 
-		_, err := scoresCollection.Find(context.TODO(), filter)
-		if err != nil {
+		cur, err := scoresCollection.Find(context.TODO(), filter)
+		scores := 0
+		for cur.Next(context.TODO()) {
+			var elem Problem
+			err := cur.Decode(&elem)
+
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			scores++
+		}
+		if err := cur.Err(); err != nil {
+			log.Println(err)
+			return
+		}
+	
+		cur.Close(context.TODO())
+		
+		if err != nil || scores == 0 {
 			scoresCollection.InsertOne(context.TODO(), bson.D {
 				{Key: "problem", Value: formResult.Problem},
 				{Key: "user", Value: userCredential.Username},
