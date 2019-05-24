@@ -28,7 +28,7 @@ type Score struct {
 // ProblemsRow holds information for one output table line
 type ProblemsRow struct {
 	Problem Problem
-	Score   Score
+	Score   int
 }
 
 // Problems handles GET request for problems page
@@ -104,7 +104,7 @@ func Problems(w http.ResponseWriter, r *http.Request) {
 	var page []ProblemsRow
 
 	// Looking for scores
-	scoresCollection := client.Database("Judex").Collection("scores")
+	solutionsCollection := client.Database("Judex").Collection("solutions")
 
 	for _, v := range problems {
 		filter = bson.D{
@@ -112,16 +112,26 @@ func Problems(w http.ResponseWriter, r *http.Request) {
 			{Key: "user", Value: userCredential.Username},
 		}
 
-		var score Score
-
-		err := scoresCollection.FindOne(context.TODO(), filter).Decode(&score)
+		cur, err := solutionsCollection.Find(context.TODO(), filter)
 
 		if err != nil && err.Error() != "mongo: no documents in result" {
 			log.Println(err)
 			return
 		}
 
-		page = append(page, ProblemsRow{v, score})
+		maxScore := 0
+
+		for cur.Next(context.TODO()) {
+			var elem Solution
+			err := cur.Decode(&elem)
+
+			if elem.Score > maxScore {
+				maxScore = elem.Score
+			}
+
+		}
+
+		page = append(page, ProblemsRow{v, maxScore})
 	}
 
 	// Executing template
