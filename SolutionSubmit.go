@@ -297,7 +297,7 @@ func SolutionSubmit(w http.ResponseWriter, r *http.Request) {
 
 		scoresCollection := client.Database("Judex").Collection("scores")
 
-		_, err := scoresCollection.UpdateOne(context.TODO(), filter, update)
+		_, err := scoresCollection.Find(context.TODO(), filter)
 		if err != nil {
 			scoresCollection.InsertOne(context.TODO(), bson.D {
 				{Key: "problem", Value: formResult.Problem},
@@ -305,6 +305,7 @@ func SolutionSubmit(w http.ResponseWriter, r *http.Request) {
 				{Key: "score", Value: score},
 			})
 		}
+		scoresCollection.UpdateOne(context.TODO(), filter, update)
 	}
 
 
