@@ -8,7 +8,7 @@ import (
 
 	// Database
 	"context"
-	"github.com/mongodb/mongo-go-driver/bson"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // SignOut handles request for signing out

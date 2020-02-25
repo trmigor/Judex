@@ -10,7 +10,7 @@ import (
 
 	// Database
 	"context"
-	"github.com/mongodb/mongo-go-driver/bson"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // Post handles GET request for page to post a solution

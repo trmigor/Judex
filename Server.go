@@ -17,7 +17,8 @@ import (
 
 	// Database
 	"context"
-	"github.com/mongodb/mongo-go-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // User is a structure for storing and using the user information
@@ -182,7 +183,7 @@ func main() {
 	http.HandleFunc("/solutions/", SingleSolution)
 
 	// Connecting to the database
-	client, err = mongo.Connect(context.TODO(), "mongodb://localhost:27017")
+	client, err = mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://localhost:27017"))
 	err = client.Ping(context.TODO(), nil)
 	if err != nil {
 		log.Fatal(err)

@@ -9,7 +9,7 @@ import (
 
 	// Database
 	"context"
-	"github.com/mongodb/mongo-go-driver/bson"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // SolvedPage holds information to show

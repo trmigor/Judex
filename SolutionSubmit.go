@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/mongodb/mongo-go-driver/bson"
+	"go.mongodb.org/mongo-driver/bson"
 	"github.com/trmigor/Judex/testing_packages/compileandrun"
 	"io/ioutil"
 	"log"
