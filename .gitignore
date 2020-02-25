@@ -1,9 +1,6 @@
 .DS_Store
 ssh_passphrase.txt
-Gopkg.lock
-Gopkg.toml
 logs.log
-vendor
 Judex
 go_drafts/Makefile
 go_drafts/*.dat
@@ -22,6 +19,5 @@ go_drafts/*/*.elf
 go_drafts/*/*.prot
 go_drafts/testing
 .vscode
-problems
 solutions
 reCAPTCHA_private
